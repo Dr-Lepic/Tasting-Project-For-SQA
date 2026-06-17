@@ -1,0 +1,29 @@
+# Node modules
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Environment variables
+.env
+client/.env
+server/.env
+
+# Build output
+client/dist
+server/build
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files (VSCode)
+.vscode/
+
+# Unused files (kept locally for potential future use)
+server/eng.traineddata
+server/utils/response.js
+server/utils/validation.js

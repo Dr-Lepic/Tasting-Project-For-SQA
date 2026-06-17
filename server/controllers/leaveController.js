@@ -1,0 +1,975 @@
+const LeaveRequest = require("../models/LeaveRequest");
+const LeaveHistoryLog = require("../models/LeaveHistoryLog");
+const AlternateRequest = require("../models/AlternateRequest");
+const User = require("../models/User");
+const Vacation = require("../models/Vacation");
+const { uploadToCloudinary } = require("../utils/cloudinaryUpload");
+const {
+  sendAlternateRequestEmail,
+  sendApplicationStatusEmail,
+  sendHoDReviewEmail,
+  sendHRReviewEmail
+} = require("../utils/emailService");
+
+// Apply for leave
+exports.applyLeave = async (req, res) => {
+  try {
+    let {
+      startDate,
+      endDate,
+      type,
+      reason,
+      backupEmployeeId,
+      alternateEmployeeIds, // Array of alternate employee IDs or JSON string
+      applicationDate,
+      applicantName,
+      departmentName,
+      applicantDesignation,
+      numberOfDays,
+      predefinedPurposes, // New field for checkbox purposes
+    } = req.body;
+
+    // Parse predefinedPurposes if it's a JSON string (from FormData)
+    let purposes = [];
+    if (typeof predefinedPurposes === 'string') {
+      try {
+        purposes = JSON.parse(predefinedPurposes);
+      } catch (e) {
+        purposes = [];
+      }
+    } else if (Array.isArray(predefinedPurposes)) {
+      purposes = predefinedPurposes;
+    }
+
+    // Parse alternateEmployeeIds if it's a JSON string (from FormData)
+    if (typeof alternateEmployeeIds === 'string') {
+      try {
+        alternateEmployeeIds = JSON.parse(alternateEmployeeIds);
+      } catch (e) {
+        alternateEmployeeIds = [];
+      }
+    }
+
+    // Validate required fields
+    if (!startDate || !endDate || !type) {
+      return res.status(400).json({ message: "Please provide start date, end date, and leave type" });
+    }
+
+    // Validate dates
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (end < start) {
+      return res.status(400).json({ message: "End date cannot be before start date" });
+    }
+
+    const currentUser = await User.findById(req.user.id).populate('department', 'name');
+    if (!currentUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Helper function to check if a date falls within a holiday period
+    const isHoliday = (date, holidaysList) => {
+      const checkDate = new Date(date);
+      checkDate.setHours(0, 0, 0, 0);
+
+      return holidaysList.some(holiday => {
+        const holidayStartDate = new Date(holiday.date);
+        holidayStartDate.setHours(0, 0, 0, 0);
+        const holidayEndDate = new Date(holidayStartDate);
+        holidayEndDate.setDate(holidayEndDate.getDate() + holiday.numberOfDays - 1);
+        holidayEndDate.setHours(23, 59, 59, 999);
+
+        return checkDate >= holidayStartDate && checkDate <= holidayEndDate;
+      });
+    };
+
+    // Calculate number of weekdays (excluding Saturday, Sunday, and holidays)
+    const calculateWeekdays = async (startDate, endDate) => {
+      // Normalize dates to start/end of day
+      const start = new Date(startDate);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+
+      // Fetch holidays that could potentially overlap with the date range
+      // Get holidays that start before or on the end date
+      const allHolidays = await Vacation.find({
+        date: { $lte: end }
+      });
+
+      // Filter holidays that actually overlap with the date range
+      const holidays = allHolidays.filter(holiday => {
+        const holidayStart = new Date(holiday.date);
+        holidayStart.setHours(0, 0, 0, 0);
+        const holidayEnd = new Date(holidayStart);
+        holidayEnd.setDate(holidayEnd.getDate() + holiday.numberOfDays - 1);
+        holidayEnd.setHours(23, 59, 59, 999);
+
+        // Check if holiday overlaps with the date range
+        return holidayStart <= end && holidayEnd >= start;
+      });
+
+      let count = 0;
+      const current = new Date(start);
+      current.setHours(0, 0, 0, 0);
+
+      while (current <= end) {
+        const dayOfWeek = current.getDay();
+        // 0 = Sunday, 6 = Saturday
+        // Only count weekdays that are not holidays
+        if (dayOfWeek !== 0 && dayOfWeek !== 6 && !isHoliday(current, holidays)) {
+          count++;
+        }
+        current.setDate(current.getDate() + 1);
+      }
+
+      return count;
+    };
+
+    const calculatedWeekdays = await calculateWeekdays(start, end);
+    const totalDays = Number(numberOfDays) > 0 ? Number(numberOfDays) : calculatedWeekdays;
+
+    // Validate that the calculated days match (security check)
+    if (Math.abs(totalDays - calculatedWeekdays) > 1) {
+      return res.status(400).json({
+        message: `Day calculation mismatch. Expected ${calculatedWeekdays} weekdays, received ${totalDays}`
+      });
+    }
+
+    // Check casual leave limit (max 2 consecutive days)
+    const leaveType = type.toLowerCase(); // 'annual' or 'casual'
+    if (leaveType === 'casual' && totalDays > 2) {
+      return res.status(400).json({
+        message: `Casual leave cannot exceed 2 consecutive days. You are requesting ${totalDays} days. Please apply for Annual Leave instead.`
+      });
+    }
+
+    // Check leave quota based on leave type
+    const quotaKey = leaveType === 'annual' || leaveType === 'casual' ? leaveType : 'annual';
+
+    const allocated = currentUser.leaveQuota[quotaKey]?.allocated || 0;
+    const used = currentUser.leaveQuota[quotaKey]?.used || 0;
+    const remaining = allocated - used;
+
+    if (remaining < totalDays) {
+      return res.status(400).json({
+        message: `Insufficient ${type} leave quota. Available: ${remaining} days, Requested: ${totalDays} days`
+      });
+    }
+
+    // Validation for Annual Leave (Purpose and Document requirements)
+    if (leaveType !== 'casual') {
+      if (!reason || reason.trim() === '') {
+        return res.status(400).json({ message: "Purpose of leave is required for Annual Leave." });
+      }
+
+      // Document is mandatory ONLY for Medical and Conference purposes
+      const needsDocument = purposes.includes('Medical') || purposes.includes('Conference');
+
+      if (needsDocument) {
+        if (!req.file && !req.body.leaveDocument) {
+          return res.status(400).json({
+            message: `Supporting document is mandatory for ${purposes.filter(p => p === 'Medical' || p === 'Conference').join(' & ')} leave.`
+          });
+        }
+      }
+    }
+
+    // Upload leave document to Cloudinary if provided
+    let leaveDocumentUrl = null;
+    if (req.file) {
+      try {
+        leaveDocumentUrl = await uploadToCloudinary(req.file.buffer, 'leave-tracker/documents');
+      } catch (uploadError) {
+        console.error('Leave document upload error:', uploadError);
+        return res.status(500).json({ message: 'Failed to upload leave document' });
+      }
+    }
+
+    // Process alternate employees
+    // Expecting alternateEmployeeIds to be an array of objects: { employeeId, startDate, endDate }
+    let alternateEmployees = [];
+    if (Array.isArray(alternateEmployeeIds)) {
+      alternateEmployees = alternateEmployeeIds.map(alt => ({
+        employee: alt.employeeId,
+        startDate: new Date(alt.startDate),
+        endDate: new Date(alt.endDate),
+        response: "pending"
+      }));
+    } else if (backupEmployeeId) {
+      // Backward compatibility
+      alternateEmployees = [{
+        employee: backupEmployeeId,
+        startDate: start,
+        endDate: end,
+        response: "pending"
+      }];
+    }
+
+    // Determine if application should wait for alternate response
+    const hasAlternates = alternateEmployees.length > 0;
+    const waitingForAlternate = hasAlternates;
+
+    // If the applicant is a HoD, their application skips HoD review entirely
+    const applicantIsHoD = currentUser.hasRole('HoD');
+
+    // Create leave request
+    const leaveRequest = new LeaveRequest({
+      employee: req.user.id,
+      department: currentUser.department,
+      departmentName: departmentName || currentUser.department?.name || '',
+      applicantName: applicantName || currentUser.name,
+      applicantDesignation: applicantDesignation || currentUser.designation,
+      applicationDate: applicationDate ? new Date(applicationDate) : new Date(),
+      startDate: start,
+      endDate: end,
+      type,
+      reason,
+      numberOfDays: totalDays,
+      backupEmployee: backupEmployeeId || null,
+      alternateEmployees: alternateEmployees,
+      waitingForAlternate: waitingForAlternate,
+      leaveDocument: leaveDocumentUrl,
+      // HoD applicants automatically bypass HoD approval level
+      approvedByHoD: applicantIsHoD ? true : false,
+    });
+
+    await leaveRequest.save();
+
+    // Create alternate requests for each alternate employee
+    if (alternateEmployees.length > 0) {
+      const alternateRequests = alternateEmployees.map(alt => ({
+        leaveRequest: leaveRequest._id,
+        applicant: req.user.id,
+        alternate: alt.employee,
+        startDate: alt.startDate,
+        endDate: alt.endDate,
+        status: "pending"
+      }));
+
+      await AlternateRequest.insertMany(alternateRequests);
+
+      // Send email notifications to alternate employees
+      for (const alt of alternateEmployees) {
+        try {
+          const alternateUser = await User.findById(alt.employee);
+          if (alternateUser && alternateUser.email) {
+            await sendAlternateRequestEmail(
+              alternateUser.email,
+              alternateUser.name,
+              currentUser.name,
+              alt.startDate,
+              alt.endDate,
+              type
+            );
+          }
+        } catch (emailError) {
+          console.error('Failed to send alternate request email:', emailError);
+          // Don't fail the request if email fails
+        }
+      }
+    } else {
+      // No alternates selected — notify HoD or HR depending on applicant role
+      try {
+        if (applicantIsHoD) {
+          // HoD applicant goes straight to HR
+          const hrUser = await User.findOne({ roles: 'HR' });
+          if (hrUser && hrUser.email) {
+            await sendHRReviewEmail(
+              hrUser.email,
+              hrUser.name,
+              currentUser.name,
+              currentUser.designation,
+              currentUser.department?.name || departmentName || '',
+              start,
+              end,
+              type,
+              totalDays
+            );
+          }
+        } else {
+          // Regular employee — notify HoD
+          const hodUser = await User.findOne({
+            department: currentUser.department,
+            roles: 'HoD'
+          });
+
+          if (hodUser && hodUser.email) {
+            await sendHoDReviewEmail(
+              hodUser.email,
+              hodUser.name,
+              currentUser.name,
+              currentUser.designation,
+              start,
+              end,
+              type,
+              totalDays
+            );
+          }
+        }
+      } catch (emailError) {
+        console.error('Failed to send review notification email:', emailError);
+        // Don't fail the request if email fails
+      }
+    }
+
+    // Create history log
+    const historyLog = new LeaveHistoryLog({
+      employee: req.user.id,
+      leaveRequest: leaveRequest._id,
+      action: "Applied",
+    });
+
+    await historyLog.save();
+
+    res.status(201).json({
+      message: "Leave application submitted successfully",
+      leaveRequest
+    });
+  } catch (error) {
+    console.error("Apply leave error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Get all leave applications for current user
+exports.getMyApplications = async (req, res) => {
+  try {
+    const applications = await LeaveRequest.find({ employee: req.user.id })
+      .populate("backupEmployee", "name email")
+      .populate("alternateEmployees.employee", "name email")
+      .populate("department", "name")
+      .sort({ createdAt: -1 });
+
+    res.json({ applications });
+  } catch (error) {
+    console.error("Get my applications error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Get finalized leave history for current user (Approved or Declined only)
+exports.getMyHistory = async (req, res) => {
+  try {
+    const applications = await LeaveRequest.find({
+      employee: req.user.id,
+      status: { $in: ["Approved", "Declined"] }
+    })
+      .populate("backupEmployee", "name email")
+      .populate("alternateEmployees.employee", "name email")
+      .populate("department", "name")
+      .sort({ createdAt: -1 });
+
+    res.json({ applications });
+  } catch (error) {
+    console.error("Get my history error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Get finalized leave history for a specific member (HoD/HR access)
+exports.getMemberHistory = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const applications = await LeaveRequest.find({
+      employee: userId,
+      status: { $in: ["Approved", "Declined"] }
+    })
+      .populate("backupEmployee", "name email")
+      .populate("alternateEmployees.employee", "name email")
+      .populate("department", "name")
+      .sort({ createdAt: -1 });
+
+    res.json({ applications });
+  } catch (error) {
+    console.error("Get member history error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Get leave history (all applications in user's department)
+exports.getLeaveHistory = async (req, res) => {
+  try {
+    const currentUser = await User.findById(req.user.id);
+
+    if (!currentUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const history = await LeaveRequest.find({
+      department: currentUser.department
+    })
+      .populate("employee", "name email profilePic")
+      .populate("backupEmployee", "name email")
+      .populate("alternateEmployees.employee", "name email")
+      .populate("department", "name")
+      .sort({ createdAt: -1 });
+
+    res.json({ history });
+  } catch (error) {
+    console.error("Get leave history error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Get pending approvals (for HoD and HR)
+exports.getPendingApprovals = async (req, res) => {
+  try {
+    const currentUser = await User.findById(req.user.id);
+
+    if (!currentUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    let query = {};
+
+    if (currentUser.hasRole("HoD")) {
+      // HoD sees pending requests in their department
+      // Only show requests that are NOT waiting for alternate response
+      // Exclude requests where the applicant themselves is HoD (those skip straight to HR)
+      const hodDeptMembers = await User.find({
+        department: currentUser.department,
+        roles: { $ne: 'HoD' }
+      }).select('_id');
+      const regularMemberIds = hodDeptMembers.map(u => u._id);
+
+      query = {
+        employee: { $in: regularMemberIds },
+        department: currentUser.department,
+        approvedByHoD: false,
+        status: "Pending",
+        waitingForAlternate: false // Only show if alternates have responded or no alternates selected
+      };
+    } else if (currentUser.hasRole("HR")) {
+      // HR sees requests approved by HoD but not by HR
+      query = {
+        approvedByHoD: true,
+        approvedByHR: false,
+        status: "Pending"
+      };
+    } else {
+      return res.status(403).json({ message: "Unauthorized access" });
+    }
+
+    const pendingApprovals = await LeaveRequest.find(query)
+      .populate("employee", "name email profilePic")
+      .populate("department", "name")
+      .populate("backupEmployee", "name email")
+      .populate("alternateEmployees.employee", "name email")
+      .sort({ createdAt: -1 });
+
+    res.json({ pendingApprovals });
+  } catch (error) {
+    console.error("Get pending approvals error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Approve/Decline leave request
+exports.updateLeaveStatus = async (req, res) => {
+  try {
+    const { leaveId } = req.params;
+    const { action, remarks } = req.body; // action: "approve" or "decline", remarks: optional remarks
+
+    const currentUser = await User.findById(req.user.id);
+    if (!currentUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const leaveRequest = await LeaveRequest.findById(leaveId);
+    if (!leaveRequest) {
+      return res.status(404).json({ message: "Leave request not found" });
+    }
+
+    let historyAction = "";
+
+    if (action === "approve") {
+      if (currentUser.hasRole("HoD")) {
+        // Check if already processed by HoD
+        if (leaveRequest.approvedByHoD) {
+          return res.status(400).json({ message: "This request has already been processed by HoD" });
+        }
+
+        leaveRequest.approvedByHoD = true;
+        leaveRequest.hodRemarks = remarks || "";
+        // Status remains "Pending" until HR reviews
+        historyAction = "Approved by HoD";
+
+        // Send email notification to HR
+        try {
+          const hrUser = await User.findOne({ roles: 'HR' });
+          const applicant = await User.findById(leaveRequest.employee).populate('department', 'name');
+
+          if (hrUser && hrUser.email && applicant) {
+            await sendHRReviewEmail(
+              hrUser.email,
+              hrUser.name,
+              applicant.name,
+              applicant.designation,
+              applicant.department?.name || leaveRequest.departmentName,
+              leaveRequest.startDate,
+              leaveRequest.endDate,
+              leaveRequest.type,
+              leaveRequest.numberOfDays
+            );
+          }
+        } catch (emailError) {
+          console.error('Failed to send HR notification email:', emailError);
+          // Don't fail the approval if email fails
+        }
+      } else if (currentUser.hasRole("HR")) {
+        // Check if HoD has approved first
+        if (!leaveRequest.approvedByHoD) {
+          return res.status(400).json({ message: "HoD approval is required before HR can approve" });
+        }
+
+        // Check if already processed by HR
+        if (leaveRequest.approvedByHR) {
+          return res.status(400).json({ message: "This request has already been processed by HR" });
+        }
+
+        leaveRequest.approvedByHR = true;
+        leaveRequest.status = "Approved";
+        leaveRequest.hrRemarks = remarks || "";
+        historyAction = "Approved by HR";
+
+        // Deduct leave quota based on leave type
+        const employee = await User.findById(leaveRequest.employee);
+        if (employee) {
+          const days = leaveRequest.numberOfDays || Math.ceil((leaveRequest.endDate - leaveRequest.startDate) / (1000 * 60 * 60 * 24)) + 1;
+          const leaveType = leaveRequest.type.toLowerCase();
+          const quotaKey = leaveType === 'annual' || leaveType === 'casual' ? leaveType : 'annual';
+
+          // Increment used days for the specific leave type
+          if (employee.leaveQuota[quotaKey]) {
+            employee.leaveQuota[quotaKey].used += days;
+          }
+
+          await employee.save();
+
+          // Update employee's leave status
+          await employee.updateLeaveStatus();
+
+          // Send approval email to employee
+          try {
+            if (employee.email) {
+              await sendApplicationStatusEmail(
+                employee.email,
+                employee.name,
+                'Approved',
+                leaveRequest.startDate,
+                leaveRequest.endDate,
+                leaveRequest.type,
+                remarks || ''
+              );
+            }
+          } catch (emailError) {
+            console.error('Failed to send approval email to employee:', emailError);
+            // Don't fail the approval if email fails
+          }
+        }
+      } else {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
+    } else if (action === "decline") {
+      // If HoD declines, completely decline the application
+      if (currentUser.hasRole("HoD")) {
+        if (leaveRequest.approvedByHoD) {
+          return res.status(400).json({ message: "This request has already been processed by HoD" });
+        }
+        leaveRequest.status = "Declined";
+        leaveRequest.hodRemarks = remarks || "";
+        historyAction = "Declined by HoD";
+      }
+      // If HR declines, completely decline the application
+      else if (currentUser.hasRole("HR")) {
+        if (!leaveRequest.approvedByHoD) {
+          return res.status(400).json({ message: "HoD approval is required before HR can review" });
+        }
+        if (leaveRequest.approvedByHR) {
+          return res.status(400).json({ message: "This request has already been processed by HR" });
+        }
+        leaveRequest.status = "Declined";
+        leaveRequest.hrRemarks = remarks || "";
+        historyAction = "Declined by HR";
+      } else {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
+
+      // Send decline email to employee
+      try {
+        const employee = await User.findById(leaveRequest.employee);
+        if (employee && employee.email) {
+          await sendApplicationStatusEmail(
+            employee.email,
+            employee.name,
+            'Declined',
+            leaveRequest.startDate,
+            leaveRequest.endDate,
+            leaveRequest.type,
+            remarks || ''
+          );
+        }
+      } catch (emailError) {
+        console.error('Failed to send decline email to employee:', emailError);
+        // Don't fail the decline if email fails
+      }
+
+      // Update employee's leave status (in case they were on leave)
+      const employee = await User.findById(leaveRequest.employee);
+      if (employee) {
+        await employee.updateLeaveStatus();
+      }
+    } else {
+      return res.status(400).json({ message: "Invalid action" });
+    }
+
+    await leaveRequest.save();
+
+    // Create history log
+    const historyLog = new LeaveHistoryLog({
+      employee: leaveRequest.employee,
+      leaveRequest: leaveRequest._id,
+      action: historyAction,
+      performedBy: req.user.id,
+      notes: remarks || "",
+    });
+
+    await historyLog.save();
+
+    res.json({
+      message: `Leave request ${action}d successfully`,
+      leaveRequest
+    });
+  } catch (error) {
+    console.error("Update leave status error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Get detailed history logs for a specific leave request
+exports.getLeaveRequestLogs = async (req, res) => {
+  try {
+    const { leaveId } = req.params;
+
+    const logs = await LeaveHistoryLog.find({ leaveRequest: leaveId })
+      .populate("performedBy", "name email role")
+      .sort({ timestamp: 1 });
+
+    res.json({ logs });
+  } catch (error) {
+    console.error("Get leave request logs error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Get alternate requests for current user
+exports.getAlternateRequests = async (req, res) => {
+  try {
+    const alternateRequests = await AlternateRequest.find({
+      alternate: req.user.id,
+      status: "pending"
+    })
+      .populate("leaveRequest", "applicantName applicantDesignation startDate endDate type reason numberOfDays")
+      .populate("applicant", "name email")
+      .sort({ createdAt: -1 });
+
+    res.json({ alternateRequests });
+  } catch (error) {
+    console.error("Get alternate requests error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Respond to alternate request (ok or sorry)
+exports.respondToAlternateRequest = async (req, res) => {
+  try {
+    const { alternateRequestId } = req.params;
+    const { response } = req.body; // "ok" or "sorry"
+
+    if (!response || !["ok", "sorry"].includes(response)) {
+      return res.status(400).json({ message: "Response must be 'ok' or 'sorry'" });
+    }
+
+    const alternateRequest = await AlternateRequest.findById(alternateRequestId)
+      .populate("leaveRequest");
+
+    if (!alternateRequest) {
+      return res.status(404).json({ message: "Alternate request not found" });
+    }
+
+    if (alternateRequest.alternate.toString() !== req.user.id.toString()) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    if (alternateRequest.status !== "pending") {
+      return res.status(400).json({ message: "This request has already been responded to" });
+    }
+
+    // Update alternate request
+    alternateRequest.status = response === "ok" ? "accepted" : "declined";
+    alternateRequest.respondedAt = new Date();
+    await alternateRequest.save();
+
+    // Update leave request's alternateEmployees array
+    const leaveRequest = alternateRequest.leaveRequest;
+    const alternateIndex = leaveRequest.alternateEmployees.findIndex(
+      alt => alt.employee.toString() === req.user.id.toString()
+    );
+
+    if (alternateIndex !== -1) {
+      leaveRequest.alternateEmployees[alternateIndex].response = response;
+      leaveRequest.alternateEmployees[alternateIndex].respondedAt = new Date();
+
+      // If response is "sorry", keep the record and check if all alternates have responded
+      if (response === "sorry") {
+        // Get the alternate's name for the log note
+        const alternateUser = await User.findById(req.user.id).select('name').lean();
+        const alternateName = alternateUser?.name || 'An alternate employee';
+
+        // Create history log for the decline
+        const historyLog = new LeaveHistoryLog({
+          employee: leaveRequest.employee,
+          leaveRequest: leaveRequest._id,
+          action: "Declined by Alternate",
+          performedBy: req.user.id,
+          notes: `${alternateName} declined to cover duties`,
+        });
+        await historyLog.save();
+
+        // Check if all alternates have now responded (no one still pending)
+        const allResponded = leaveRequest.alternateEmployees.every(
+          alt => alt.response !== 'pending'
+        );
+        const hasOkResponse = leaveRequest.alternateEmployees.some(
+          alt => alt.response === 'ok'
+        );
+
+        // Only release to HoD when all have responded and none agreed
+        if (allResponded && !hasOkResponse && leaveRequest.waitingForAlternate) {
+          leaveRequest.waitingForAlternate = false;
+          leaveRequest.hodRemarks = `All selected alternate employees declined to cover duties. Please review and decide.`;
+
+          // Notify HoD (or HR if applicant is HoD)
+          try {
+            const applicant = await User.findById(leaveRequest.employee).populate('department');
+            if (applicant) {
+              const applicantIsHoD = applicant.hasRole('HoD');
+              if (applicantIsHoD) {
+                const hrUser = await User.findOne({ roles: 'HR' });
+                if (hrUser && hrUser.email) {
+                  await sendHRReviewEmail(
+                    hrUser.email,
+                    hrUser.name,
+                    applicant.name,
+                    applicant.designation,
+                    applicant.department?.name || leaveRequest.departmentName || '',
+                    leaveRequest.startDate,
+                    leaveRequest.endDate,
+                    leaveRequest.type,
+                    leaveRequest.numberOfDays
+                  );
+                }
+              } else {
+                const hodUser = await User.findOne({
+                  department: applicant.department,
+                  roles: 'HoD'
+                });
+                if (hodUser && hodUser.email) {
+                  await sendHoDReviewEmail(
+                    hodUser.email,
+                    hodUser.name,
+                    applicant.name,
+                    applicant.designation,
+                    leaveRequest.startDate,
+                    leaveRequest.endDate,
+                    leaveRequest.type,
+                    leaveRequest.numberOfDays
+                  );
+                }
+              }
+            }
+          } catch (emailError) {
+            console.error('Failed to send HoD notification after alternate refusal:', emailError);
+          }
+        }
+      }
+
+      // Check if all remaining alternates have responded with "ok"
+      // If at least one alternate has responded "ok", release to HoD
+      if (response === "ok") {
+        const hasOkResponse = leaveRequest.alternateEmployees.some(
+          alt => alt.response === "ok"
+        );
+
+        if (hasOkResponse) {
+          // At least one alternate has agreed, release application
+          leaveRequest.waitingForAlternate = false;
+
+          // Create history log for the acceptance
+          const historyLog = new LeaveHistoryLog({
+            employee: leaveRequest.employee,
+            leaveRequest: leaveRequest._id,
+            action: "Accepted by Alternate",
+            performedBy: req.user.id,
+            notes: "Alternate employee accepted to cover duties",
+          });
+          await historyLog.save();
+
+          // Send email notification to HoD or HR depending on applicant role
+          try {
+            const applicant = await User.findById(leaveRequest.employee).populate('department');
+            if (applicant) {
+              const applicantIsHoD = applicant.hasRole('HoD');
+
+              if (applicantIsHoD) {
+                // HoD applicant — notify HR directly
+                const hrUser = await User.findOne({ roles: 'HR' });
+                if (hrUser && hrUser.email) {
+                  await sendHRReviewEmail(
+                    hrUser.email,
+                    hrUser.name,
+                    applicant.name,
+                    applicant.designation,
+                    applicant.department?.name || leaveRequest.departmentName || '',
+                    leaveRequest.startDate,
+                    leaveRequest.endDate,
+                    leaveRequest.type,
+                    leaveRequest.numberOfDays
+                  );
+                }
+              } else {
+                // Regular employee — notify HoD
+                const hodUser = await User.findOne({
+                  department: applicant.department,
+                  roles: 'HoD'
+                });
+
+                if (hodUser && hodUser.email) {
+                  await sendHoDReviewEmail(
+                    hodUser.email,
+                    hodUser.name,
+                    applicant.name,
+                    applicant.designation,
+                    leaveRequest.startDate,
+                    leaveRequest.endDate,
+                    leaveRequest.type,
+                    leaveRequest.numberOfDays
+                  );
+                }
+              }
+            }
+          } catch (emailError) {
+            console.error('Failed to send review notification email:', emailError);
+            // Don't fail the response if email fails
+          }
+        }
+      }
+
+      await leaveRequest.save();
+    }
+
+    res.json({
+      message: `Alternate request ${response === "ok" ? "accepted" : "declined"} successfully`,
+      alternateRequest
+    });
+  } catch (error) {
+    console.error("Respond to alternate request error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Get filtered leave applications for analytics
+exports.getFilteredApplications = async (req, res) => {
+  try {
+    const { status, period, year, month, departmentId } = req.query;
+    const userRoles = req.user.roles || [];
+
+    // Check if user is HoD or HR
+    if (!userRoles.includes('HoD') && !userRoles.includes('HR')) {
+      return res.status(403).json({ message: 'Access denied. HoD or HR role required.' });
+    }
+
+    // Build filter query
+    const filter = {};
+
+    // Status filter
+    if (status && status !== 'all') {
+      filter.status = status;
+
+      // For 'Pending', apply role-specific sub-filters so the list matches the stat card
+      if (status === 'Pending') {
+        if (userRoles.includes('HR')) {
+          // HR's "pending" stat counts requests approved by HoD but not yet by HR
+          filter.approvedByHoD = true;
+        } else if (userRoles.includes('HoD') && !userRoles.includes('HR')) {
+          // HoD's "pending" stat counts requests not yet approved by HoD and not waiting for alternate
+          filter.approvedByHoD = false;
+          filter.waitingForAlternate = false;
+        }
+      }
+    }
+
+    // Department filter (HR can filter by department, HoD only sees their department)
+    if (userRoles.includes('HoD') && !userRoles.includes('HR')) {
+      // HoD can only see their department
+      const hodUser = await User.findById(req.user.id).populate('department');
+      if (hodUser && hodUser.department) {
+        const departmentUsers = await User.find({ department: hodUser.department._id }).select('_id');
+        filter.employee = { $in: departmentUsers.map(u => u._id) };
+      }
+    } else if (userRoles.includes('HR')) {
+      // HR can filter by department
+      if (departmentId && departmentId !== 'all') {
+        const departmentUsers = await User.find({ department: departmentId }).select('_id');
+        filter.employee = { $in: departmentUsers.map(u => u._id) };
+      }
+    }
+
+    // Date filter based on period — filter by when the application was submitted (createdAt)
+    if (period && year) {
+      const startYear = parseInt(year);
+
+      if (period === 'monthly' && month) {
+        const startMonth = parseInt(month);
+        const periodStart = new Date(startYear, startMonth - 1, 1);
+        const periodEnd = new Date(startYear, startMonth, 0, 23, 59, 59, 999);
+        filter.createdAt = { $gte: periodStart, $lte: periodEnd };
+      } else if (period === 'yearly') {
+        const periodStart = new Date(startYear, 0, 1);
+        const periodEnd = new Date(startYear, 11, 31, 23, 59, 59, 999);
+        filter.createdAt = { $gte: periodStart, $lte: periodEnd };
+      }
+    }
+
+    // Fetch applications
+    const applications = await LeaveRequest.find(filter)
+      .populate('employee', 'name email designation department')
+      .populate({
+        path: 'employee',
+        populate: {
+          path: 'department',
+          select: 'name code'
+        }
+      })
+      .populate('alternateEmployees.employee', 'name email')
+      .populate('backupEmployee', 'name email')
+      .sort({ createdAt: -1 })
+      .limit(200); // Limit to prevent too large response
+
+    // Map applications to include userId for frontend compatibility
+    const mappedApplications = applications.map(app => ({
+      ...app.toObject(),
+      userId: app.employee
+    }));
+
+    res.json({
+      applications: mappedApplications,
+      count: applications.length
+    });
+  } catch (error) {
+    console.error('Get filtered applications error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
