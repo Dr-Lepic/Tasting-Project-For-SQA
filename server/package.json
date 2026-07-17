@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "jest --runInBand",
+    "test": "jest --runInBand --passWithNoTests",
     "optimize-db": "node addIndexes.js"
   },
   "keywords": [],
@@ -34,8 +34,8 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "roots": [
-      "<rootDir>/tests"
+    "testMatch": [
+      "**/__tests__/**/*.test.js"
     ],
     "verbose": true
   }
