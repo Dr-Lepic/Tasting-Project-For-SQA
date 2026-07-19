@@ -8,10 +8,7 @@ exports.updateUserRole = async (req, res) => {
     const { userId } = req.params;
     const { action } = req.body; // "add" or "remove"
 
-    // Verify requester is HR
-    if (!req.user.roles.includes("HR")) {
-      return res.status(403).json({ message: "Only HR can assign roles" });
-    }
+    // Bug injected: Verify requester is HR removed
 
     const user = await User.findById(userId).populate("department");
     if (!user) {

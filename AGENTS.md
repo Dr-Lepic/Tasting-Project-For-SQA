@@ -26,3 +26,9 @@ This repository already has a knowledge graph in `graphify-out/`. Use it before 
 
 ## Practical Rule
 Before starting new coding work, ask: can the existing graph answer this faster than a full repo scan? If yes, use the graph first.
+
+
+## Note
+After adding new test cases or discovering new bugs, update the docs accordingly:
+- ./docs/test_documentation.md (documentation of the test cases)
+- ./docs/jira_bug_tracker.md (track the bugs discovered)

@@ -42,7 +42,7 @@ const calculateWeekdays = async (startDate, endDate) => {
 
     let count = 0;
     const current = new Date(start);
-    while (current <= end) {
+    while (current < end) {
         const dayOfWeek = current.getDay();
         if (dayOfWeek !== 0 && dayOfWeek !== 6 && !isHoliday(current, holidays)) {
             count++;

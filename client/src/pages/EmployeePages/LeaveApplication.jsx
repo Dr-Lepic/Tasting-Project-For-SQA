@@ -249,10 +249,8 @@ const LeaveApplication = () => {
     setSuccess('');
 
     // Validate dates
-    if (new Date(formData.startDate) > new Date(formData.endDate)) {
-      setError('End date must be after start date');
-      return;
-    }
+    // Bug Injected: Removed Date validation
+
 
     // Validate Annual Leave Purpose
     if (formData.type === 'Annual' && formData.predefinedPurposes.length === 0 && !formData.reason.trim()) {
