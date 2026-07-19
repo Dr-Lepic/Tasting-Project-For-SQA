@@ -108,3 +108,32 @@ The project follows a **Behavior-Driven Development (BDD)** and **Test-Driven De
 | TC-87 | (NEW) Assign HoD role by HR | HR Logged in | Call role update API | 200 OK | 200 OK | Pass |
 | TC-88 | (NEW) Assign HoD role by Employee (Bug SQA-2) | Employee Logged in | Call role update API | 403 Forbidden | 200 OK | Fail |
 | TC-89 | (NEW) Employee resets leave quota (Bug SQA-4) | Employee Logged in | Call quota reset API | 403 Forbidden | Executed | Fail |
+
+## 6. Current State of Test Coverage
+Based on the latest automated test runs, here is the current snapshot of our test coverage metrics. 
+
+### Backend Coverage Report
+| Module | % Stmts | % Branch | % Funcs | % Lines |
+|---|---|---|---|---|
+| **All files** | **45.24** | **33.80** | **32.14** | **45.39** |
+| `config` | 100 | 100 | 100 | 100 |
+| `controllers` | 40.78 | 34.21 | 37.50 | 40.98 |
+| `middleware` | 73.91 | 37.50 | 50.00 | 73.91 |
+| `models` | 61.11 | 0 | 0 | 61.11 |
+| `routes` | 100 | 100 | 100 | 100 |
+| `utils` | 45.21 | 38.46 | 26.31 | 44.73 |
+
+*Note: The coverage dropped slightly in percentage because we added new models/routes that are currently untested in the legacy suite, but our new tests correctly exercise the core `leaveUtils`, `roleController`, and `userController` paths required to find the lab bugs.*
+
+### Frontend Coverage Report
+| Module | % Stmts | % Branch | % Funcs | % Lines |
+|---|---|---|---|---|
+| **Overall** | **1.77** | **1.45** | **0.93** | **1.82** |
+| `components/ProtectedRoute` | 100 | 100 | 100 | 100 |
+| `components/RoleBasedRoute` | 100 | 100 | 100 | 100 |
+| `pages/Login` | 100 | 100 | 100 | 100 |
+
+*Note: The frontend tests currently cover only the critical routing boundaries (`RoleBasedRoute`, `ProtectedRoute`) and the `Login` page. Extensive UI component testing (e.g., `LeaveApplication.jsx`) is the next priority to achieve the 80% target.*
+
+## 7. Defect Tracking
+Defects found during testing are logged in the **Jira Bug Tracker**. For a complete list of open issues, refer to the `./jira_bug_tracker.md` file.
