@@ -55,3 +55,10 @@ This document organizes the Jira board for the SQA lab course. It lists the bugs
 - **Severity**: High
 - **Description**: Use employee/alternate tokens to access actions reserved for HoD/HR and observe whether the API blocks them. There is an authorization gap here.
 - **Failing Test ID**: TC-66, TC-67, TC-68
+
+### SQA-8: Unauthorized Member Leave History Access by Regular Employees (Backend)
+- **Status**: To Do
+- **Severity**: High
+- **Description**: The `getMemberHistory` endpoint in `leaveController.js` is documented and intended for HoD and HR access only, but lacks role and department authorization checks on `req.user`. A regular employee can view any other employee's private leave history by passing their `userId`.
+- **Failing Test ID**: TC-90
+

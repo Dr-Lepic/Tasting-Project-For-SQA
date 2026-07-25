@@ -108,6 +108,7 @@ The project follows a **Behavior-Driven Development (BDD)** and **Test-Driven De
 | TC-87 | (NEW) Assign HoD role by HR | HR Logged in | Call role update API | 200 OK | 200 OK | Pass |
 | TC-88 | (NEW) Assign HoD role by Employee (Bug SQA-2) | Employee Logged in | Call role update API | 403 Forbidden | 200 OK | Fail |
 | TC-89 | (NEW) Employee resets leave quota (Bug SQA-4) | Employee Logged in | Call quota reset API | 403 Forbidden | Executed | Fail |
+| TC-90 | (NEW) Unauthorized member leave history access (Bug SQA-8) | Employee Logged in | Call member history API for another user | 403 Forbidden | 200 OK with private member leave data | Fail |
 
 ## 6. Current State of Test Coverage
 Based on the latest automated test runs, here is the current snapshot of our test coverage metrics. 
@@ -115,9 +116,9 @@ Based on the latest automated test runs, here is the current snapshot of our tes
 ### Backend Coverage Report
 | Module | % Stmts | % Branch | % Funcs | % Lines |
 |---|---|---|---|---|
-| **All files** | **45.24** | **33.80** | **32.14** | **45.39** |
+| **All files** | **45.66** | **33.80** | **33.33** | **45.81** |
 | `config` | 100 | 100 | 100 | 100 |
-| `controllers` | 40.78 | 34.21 | 37.50 | 40.98 |
+| `controllers` | 41.31 | 34.21 | 39.28 | 41.53 |
 | `middleware` | 73.91 | 37.50 | 50.00 | 73.91 |
 | `models` | 61.11 | 0 | 0 | 61.11 |
 | `routes` | 100 | 100 | 100 | 100 |
