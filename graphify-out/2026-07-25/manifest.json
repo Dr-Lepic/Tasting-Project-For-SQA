@@ -1,7 +1,7 @@
 {
   ".gemini/settings.json": {
-    "mtime": 1784955382.2811632,
-    "ast_hash": "06926e7798937c67f69c6063b97e83e9",
+    "mtime": 1784953487.0225973,
+    "ast_hash": "bc202ab39387c80fd4355f79415124c6",
     "semantic_hash": ""
   },
   "client/babel.config.js": {
@@ -380,8 +380,8 @@
     "semantic_hash": ""
   },
   "server/controllers/__tests__/authController.test.js": {
-    "mtime": 1784955530.456062,
-    "ast_hash": "8d7ec084d259c787a25d4d0914fc9e00",
+    "mtime": 1784953487.0432808,
+    "ast_hash": "876f9e749aa77342ae20966eddc7740b",
     "semantic_hash": ""
   },
   "server/controllers/__tests__/bugRegression.test.js": {
@@ -645,13 +645,13 @@
     "semantic_hash": ""
   },
   "docs/jira_bug_tracker.md": {
-    "mtime": 1784955559.3072908,
-    "ast_hash": "9e6c40edae0982cd77046a8c6c08c064",
+    "mtime": 1784954688.6810834,
+    "ast_hash": "3d223c1fb03909043c8a96e5bb743202",
     "semantic_hash": ""
   },
   "docs/test_documentation.md": {
-    "mtime": 1784955550.4127693,
-    "ast_hash": "3979f7a6a0d8041e3dcf5691c59252b2",
+    "mtime": 1784954682.4716885,
+    "ast_hash": "c7424f4ea8bb90588235ab7e1db375a1",
     "semantic_hash": ""
   },
   "docs/walkthrough.md": {
@@ -667,16 +667,6 @@
   "client/src/assets/react.svg": {
     "mtime": 1784953487.025139,
     "ast_hash": "f0402b67b6ce880f65666bb49e841696",
-    "semantic_hash": ""
-  },
-  "server/controllers/__tests__/analyticsController.test.js": {
-    "mtime": 1784955535.0835192,
-    "ast_hash": "7d8a3ead4c5bc515c3ce516a184dd25f",
-    "semantic_hash": ""
-  },
-  ".agents/skills/graphify/SKILL.md": {
-    "mtime": 1784955270.9241762,
-    "ast_hash": "3fcd80d50dfef4855776a1d6ed2f7632",
     "semantic_hash": ""
   }
 }

@@ -846,8 +846,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "client_src_components_annualleave",
-      "community": 14,
-      "community_name": "SystemSettings.jsx",
+      "community": 51,
+      "community_name": "LeaveData.jsx",
       "norm_label": "annualleave.jsx"
     },
     {
@@ -857,8 +857,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "client_src_components_annualleave_annualleave",
-      "community": 14,
-      "community_name": "SystemSettings.jsx",
+      "community": 51,
+      "community_name": "LeaveData.jsx",
       "norm_label": "annualleave"
     },
     {
@@ -890,8 +890,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "client_src_components_casualleave",
-      "community": 14,
-      "community_name": "SystemSettings.jsx",
+      "community": 51,
+      "community_name": "LeaveData.jsx",
       "norm_label": "casualleave.jsx"
     },
     {
@@ -901,8 +901,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "client_src_components_casualleave_casualleave",
-      "community": 14,
-      "community_name": "SystemSettings.jsx",
+      "community": 51,
+      "community_name": "LeaveData.jsx",
       "norm_label": "casualleave"
     },
     {
@@ -1022,8 +1022,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "client_src_components_employeeholiday",
-      "community": 14,
-      "community_name": "SystemSettings.jsx",
+      "community": 51,
+      "community_name": "LeaveData.jsx",
       "norm_label": "employeeholiday.jsx"
     },
     {
@@ -1033,8 +1033,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "client_src_components_employeeholiday_employeeholiday",
-      "community": 14,
-      "community_name": "SystemSettings.jsx",
+      "community": 51,
+      "community_name": "LeaveData.jsx",
       "norm_label": "employeeholiday()"
     },
     {
@@ -1275,8 +1275,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "client_src_components_leavedata",
-      "community": 14,
-      "community_name": "SystemSettings.jsx",
+      "community": 51,
+      "community_name": "LeaveData.jsx",
       "norm_label": "leavedata.jsx"
     },
     {
@@ -1286,8 +1286,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "client_src_components_leavedata_leavedata",
-      "community": 14,
-      "community_name": "SystemSettings.jsx",
+      "community": 51,
+      "community_name": "LeaveData.jsx",
       "norm_label": "leavedata()"
     },
     {
@@ -2166,8 +2166,8 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "client_src_services_api_departmentapi",
-      "community": 10,
-      "community_name": "LeaveAnalytics.jsx",
+      "community": 0,
+      "community_name": "App.jsx",
       "norm_label": "departmentapi"
     },
     {
@@ -2210,8 +2210,8 @@
       "source_location": "L108",
       "_origin": "ast",
       "id": "client_src_services_api_vacationapi",
-      "community": 14,
-      "community_name": "SystemSettings.jsx",
+      "community": 0,
+      "community_name": "App.jsx",
       "norm_label": "vacationapi"
     },
     {
@@ -2441,8 +2441,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_config_db",
-      "community": 11,
-      "community_name": "index.js",
+      "community": 28,
+      "community_name": "db.js",
       "norm_label": "db.js"
     },
     {
@@ -2452,8 +2452,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_config_db_mongoose",
-      "community": 11,
-      "community_name": "index.js",
+      "community": 28,
+      "community_name": "db.js",
       "norm_label": "mongoose"
     },
     {
@@ -2463,64 +2463,9 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "server_config_db_connectdb",
-      "community": 11,
-      "community_name": "index.js",
+      "community": 28,
+      "community_name": "db.js",
       "norm_label": "connectdb()"
-    },
-    {
-      "label": "analyticsController.test.js",
-      "file_type": "code",
-      "source_file": "server/controllers/__tests__/analyticsController.test.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_controllers_tests_analyticscontroller_test",
-      "community": 9,
-      "community_name": "analyticsController.js",
-      "norm_label": "analyticscontroller.test.js"
-    },
-    {
-      "label": "{ getHoDAnalytics }",
-      "file_type": "code",
-      "source_file": "server/controllers/__tests__/analyticsController.test.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_controllers_tests_analyticscontroller_test_gethodanalytics",
-      "community": 9,
-      "community_name": "analyticsController.js",
-      "norm_label": "{ gethodanalytics }"
-    },
-    {
-      "label": "User",
-      "file_type": "code",
-      "source_file": "server/controllers/__tests__/analyticsController.test.js",
-      "source_location": "L2",
-      "_origin": "ast",
-      "id": "server_controllers_tests_analyticscontroller_test_user",
-      "community": 9,
-      "community_name": "analyticsController.js",
-      "norm_label": "user"
-    },
-    {
-      "label": "LeaveRequest",
-      "file_type": "code",
-      "source_file": "server/controllers/__tests__/analyticsController.test.js",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "server_controllers_tests_analyticscontroller_test_leaverequest",
-      "community": 9,
-      "community_name": "analyticsController.js",
-      "norm_label": "leaverequest"
-    },
-    {
-      "label": "makeRes()",
-      "file_type": "code",
-      "source_file": "server/controllers/__tests__/analyticsController.test.js",
-      "source_location": "L9",
-      "_origin": "ast",
-      "id": "server_controllers_tests_analyticscontroller_test_makeres",
-      "community": 9,
-      "community_name": "analyticsController.js",
-      "norm_label": "makeres()"
     },
     {
       "label": "authController.behavior.test.js",
@@ -2903,8 +2848,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_controllers_tests_leavequotacontroller_test",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 12,
+      "community_name": "leaveQuotaRoutes.js",
       "norm_label": "leavequotacontroller.test.js"
     },
     {
@@ -2914,8 +2859,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_controllers_tests_leavequotacontroller_test_leavequotacontroller",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 12,
+      "community_name": "leaveQuotaRoutes.js",
       "norm_label": "leavequotacontroller"
     },
     {
@@ -2925,8 +2870,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "server_controllers_tests_leavequotacontroller_test_user",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 12,
+      "community_name": "leaveQuotaRoutes.js",
       "norm_label": "user"
     },
     {
@@ -2936,8 +2881,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_controllers_tests_rolecontroller_test",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 20,
+      "community_name": "User.js",
       "norm_label": "rolecontroller.test.js"
     },
     {
@@ -2947,8 +2892,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_controllers_tests_rolecontroller_test_rolecontroller",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 20,
+      "community_name": "User.js",
       "norm_label": "rolecontroller"
     },
     {
@@ -2958,8 +2903,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "server_controllers_tests_rolecontroller_test_user",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 20,
+      "community_name": "User.js",
       "norm_label": "user"
     },
     {
@@ -2969,8 +2914,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_controllers_tests_usercontroller_test",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 20,
+      "community_name": "User.js",
       "norm_label": "usercontroller.test.js"
     },
     {
@@ -2980,8 +2925,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_controllers_tests_usercontroller_test_usercontroller",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 20,
+      "community_name": "User.js",
       "norm_label": "usercontroller"
     },
     {
@@ -2991,8 +2936,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "server_controllers_tests_usercontroller_test_user",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 20,
+      "community_name": "User.js",
       "norm_label": "user"
     },
     {
@@ -3200,8 +3145,8 @@
       "source_location": "L198",
       "_origin": "ast",
       "id": "server_controllers_authcontroller_forgotpassword",
-      "community": 15,
-      "community_name": "authController.test.js",
+      "community": 13,
+      "community_name": "authController.js",
       "norm_label": "forgotpassword()"
     },
     {
@@ -3442,8 +3387,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_controllers_hrdashboardcontroller",
-      "community": 12,
-      "community_name": "leaveQuotaRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "hrdashboardcontroller.js"
     },
     {
@@ -3453,8 +3398,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_controllers_hrdashboardcontroller_user",
-      "community": 12,
-      "community_name": "leaveQuotaRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "user"
     },
     {
@@ -3464,8 +3409,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "server_controllers_hrdashboardcontroller_leaverequest",
-      "community": 12,
-      "community_name": "leaveQuotaRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "leaverequest"
     },
     {
@@ -3475,8 +3420,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "server_controllers_hrdashboardcontroller_gethrdashboardstats",
-      "community": 12,
-      "community_name": "leaveQuotaRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "gethrdashboardstats()"
     },
     {
@@ -3695,8 +3640,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_controllers_leavequotacontroller",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 12,
+      "community_name": "leaveQuotaRoutes.js",
       "norm_label": "leavequotacontroller.js"
     },
     {
@@ -3706,8 +3651,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_controllers_leavequotacontroller_user",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 12,
+      "community_name": "leaveQuotaRoutes.js",
       "norm_label": "user"
     },
     {
@@ -3717,8 +3662,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "server_controllers_leavequotacontroller_getleavequotasettings",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 12,
+      "community_name": "leaveQuotaRoutes.js",
       "norm_label": "getleavequotasettings()"
     },
     {
@@ -3728,8 +3673,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "server_controllers_leavequotacontroller_updateleavequotaforall",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 12,
+      "community_name": "leaveQuotaRoutes.js",
       "norm_label": "updateleavequotaforall()"
     },
     {
@@ -3739,8 +3684,8 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "server_controllers_leavequotacontroller_updateuserleavequota",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 12,
+      "community_name": "leaveQuotaRoutes.js",
       "norm_label": "updateuserleavequota()"
     },
     {
@@ -3750,8 +3695,8 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "server_controllers_leavequotacontroller_resetusedleavequota",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 12,
+      "community_name": "leaveQuotaRoutes.js",
       "norm_label": "resetusedleavequota()"
     },
     {
@@ -3761,8 +3706,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_controllers_rolecontroller",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 20,
+      "community_name": "User.js",
       "norm_label": "rolecontroller.js"
     },
     {
@@ -3772,8 +3717,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_controllers_rolecontroller_user",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 20,
+      "community_name": "User.js",
       "norm_label": "user"
     },
     {
@@ -3783,8 +3728,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "server_controllers_rolecontroller_updateuserrole",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 20,
+      "community_name": "User.js",
       "norm_label": "updateuserrole()"
     },
     {
@@ -3794,8 +3739,8 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "server_controllers_rolecontroller_getallusers",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 20,
+      "community_name": "User.js",
       "norm_label": "getallusers()"
     },
     {
@@ -4058,8 +4003,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_createtestleaves",
-      "community": 16,
-      "community_name": "departmentRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "createtestleaves.js"
     },
     {
@@ -4069,8 +4014,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_createtestleaves_mongoose",
-      "community": 16,
-      "community_name": "departmentRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "mongoose"
     },
     {
@@ -4080,8 +4025,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "server_createtestleaves_user",
-      "community": 16,
-      "community_name": "departmentRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "user"
     },
     {
@@ -4091,8 +4036,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "server_createtestleaves_leaverequest",
-      "community": 16,
-      "community_name": "departmentRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "leaverequest"
     },
     {
@@ -4102,8 +4047,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "server_createtestleaves_department",
-      "community": 16,
-      "community_name": "departmentRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "department"
     },
     {
@@ -4113,8 +4058,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "server_createtestleaves_createtestleaves",
-      "community": 16,
-      "community_name": "departmentRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "createtestleaves()"
     },
     {
@@ -4542,8 +4487,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_models_leaverequest",
-      "community": 9,
-      "community_name": "analyticsController.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "leaverequest.js"
     },
     {
@@ -4553,8 +4498,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_models_leaverequest_mongoose",
-      "community": 9,
-      "community_name": "analyticsController.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "mongoose"
     },
     {
@@ -4564,8 +4509,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "server_models_leaverequest_leaverequestschema",
-      "community": 9,
-      "community_name": "analyticsController.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "leaverequestschema"
     },
     {
@@ -4575,8 +4520,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_models_otp",
-      "community": 18,
-      "community_name": "bugRegression.test.js",
+      "community": 15,
+      "community_name": "authController.test.js",
       "norm_label": "otp.js"
     },
     {
@@ -4586,8 +4531,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_models_otp_mongoose",
-      "community": 18,
-      "community_name": "bugRegression.test.js",
+      "community": 15,
+      "community_name": "authController.test.js",
       "norm_label": "mongoose"
     },
     {
@@ -4597,8 +4542,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "server_models_otp_otpschema",
-      "community": 18,
-      "community_name": "bugRegression.test.js",
+      "community": 15,
+      "community_name": "authController.test.js",
       "norm_label": "otpschema"
     },
     {
@@ -4608,8 +4553,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_models_user",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 20,
+      "community_name": "User.js",
       "norm_label": "user.js"
     },
     {
@@ -4619,8 +4564,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_models_user_mongoose",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 20,
+      "community_name": "User.js",
       "norm_label": "mongoose"
     },
     {
@@ -4630,8 +4575,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "server_models_user_leavequotaschema",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 20,
+      "community_name": "User.js",
       "norm_label": "leavequotaschema"
     },
     {
@@ -4641,8 +4586,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "server_models_user_userschema",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 20,
+      "community_name": "User.js",
       "norm_label": "userschema"
     },
     {
@@ -4839,8 +4784,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "server_package_dependencies_bcryptjs",
-      "community": 6,
-      "community_name": "dependencies",
+      "community": 73,
+      "community_name": "bcryptjs",
       "norm_label": "bcryptjs"
     },
     {
@@ -4850,8 +4795,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "bcryptjs",
-      "community": 6,
-      "community_name": "dependencies",
+      "community": 73,
+      "community_name": "bcryptjs",
       "norm_label": "bcryptjs"
     },
     {
@@ -5059,8 +5004,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "server_package_dependencies_nodemon",
-      "community": 28,
-      "community_name": "db.js",
+      "community": 6,
+      "community_name": "dependencies",
       "norm_label": "nodemon"
     },
     {
@@ -5070,8 +5015,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "nodemon",
-      "community": 28,
-      "community_name": "db.js",
+      "community": 6,
+      "community_name": "dependencies",
       "norm_label": "nodemon"
     },
     {
@@ -5378,8 +5323,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_routes_departmentroutes",
-      "community": 23,
-      "community_name": "authMiddleware.js",
+      "community": 16,
+      "community_name": "departmentRoutes.js",
       "norm_label": "departmentroutes.js"
     },
     {
@@ -5389,8 +5334,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_routes_departmentroutes_express",
-      "community": 23,
-      "community_name": "authMiddleware.js",
+      "community": 16,
+      "community_name": "departmentRoutes.js",
       "norm_label": "express"
     },
     {
@@ -5400,8 +5345,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "server_routes_departmentroutes_router",
-      "community": 23,
-      "community_name": "authMiddleware.js",
+      "community": 16,
+      "community_name": "departmentRoutes.js",
       "norm_label": "router"
     },
     {
@@ -5411,8 +5356,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "server_routes_departmentroutes_departmentcontroller",
-      "community": 23,
-      "community_name": "authMiddleware.js",
+      "community": 16,
+      "community_name": "departmentRoutes.js",
       "norm_label": "departmentcontroller"
     },
     {
@@ -5422,8 +5367,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "server_routes_departmentroutes_authmiddleware",
-      "community": 23,
-      "community_name": "authMiddleware.js",
+      "community": 16,
+      "community_name": "departmentRoutes.js",
       "norm_label": "authmiddleware"
     },
     {
@@ -5499,8 +5444,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_routes_hrdashboardroutes",
-      "community": 12,
-      "community_name": "leaveQuotaRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "hrdashboardroutes.js"
     },
     {
@@ -5510,8 +5455,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_routes_hrdashboardroutes_express",
-      "community": 12,
-      "community_name": "leaveQuotaRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "express"
     },
     {
@@ -5521,8 +5466,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "server_routes_hrdashboardroutes_router",
-      "community": 12,
-      "community_name": "leaveQuotaRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "router"
     },
     {
@@ -5532,8 +5477,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "server_routes_hrdashboardroutes_gethrdashboardstats",
-      "community": 12,
-      "community_name": "leaveQuotaRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "{ gethrdashboardstats }"
     },
     {
@@ -5543,8 +5488,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "server_routes_hrdashboardroutes_authmiddleware",
-      "community": 12,
-      "community_name": "leaveQuotaRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "authmiddleware"
     },
     {
@@ -5554,8 +5499,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "server_routes_hrdashboardroutes_authorize",
-      "community": 12,
-      "community_name": "leaveQuotaRoutes.js",
+      "community": 5,
+      "community_name": "hodDashboardRoutes.js",
       "norm_label": "authorize"
     },
     {
@@ -5565,8 +5510,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_routes_leavequotaroutes",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 12,
+      "community_name": "leaveQuotaRoutes.js",
       "norm_label": "leavequotaroutes.js"
     },
     {
@@ -5576,8 +5521,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_routes_leavequotaroutes_express",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 12,
+      "community_name": "leaveQuotaRoutes.js",
       "norm_label": "express"
     },
     {
@@ -5587,8 +5532,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "server_routes_leavequotaroutes_router",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 12,
+      "community_name": "leaveQuotaRoutes.js",
       "norm_label": "router"
     },
     {
@@ -5598,8 +5543,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "server_routes_leavequotaroutes_getleavequotasettings_updateleavequotaforall_updateuserleavequota_resetusedleavequota",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 12,
+      "community_name": "leaveQuotaRoutes.js",
       "norm_label": "{ \n  getleavequotasettings, \n  updateleavequotaforall,\n  updateuserleavequota,\n  resetusedleavequota\n}"
     },
     {
@@ -5609,8 +5554,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "server_routes_leavequotaroutes_authmiddleware",
-      "community": 8,
-      "community_name": "userController.js",
+      "community": 12,
+      "community_name": "leaveQuotaRoutes.js",
       "norm_label": "authmiddleware"
     },
     {
@@ -5620,8 +5565,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_routes_leaveroutes",
-      "community": 24,
-      "community_name": "upload.js",
+      "community": 26,
+      "community_name": "leaveRoutes.js",
       "norm_label": "leaveroutes.js"
     },
     {
@@ -5631,8 +5576,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_routes_leaveroutes_express",
-      "community": 24,
-      "community_name": "upload.js",
+      "community": 26,
+      "community_name": "leaveRoutes.js",
       "norm_label": "express"
     },
     {
@@ -5642,8 +5587,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "server_routes_leaveroutes_router",
-      "community": 24,
-      "community_name": "upload.js",
+      "community": 26,
+      "community_name": "leaveRoutes.js",
       "norm_label": "router"
     },
     {
@@ -5653,8 +5598,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "server_routes_leaveroutes_leavecontroller",
-      "community": 24,
-      "community_name": "upload.js",
+      "community": 26,
+      "community_name": "leaveRoutes.js",
       "norm_label": "leavecontroller"
     },
     {
@@ -5664,8 +5609,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "server_routes_leaveroutes_authmiddleware",
-      "community": 24,
-      "community_name": "upload.js",
+      "community": 26,
+      "community_name": "leaveRoutes.js",
       "norm_label": "authmiddleware"
     },
     {
@@ -5675,8 +5620,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "server_routes_leaveroutes_upload",
-      "community": 24,
-      "community_name": "upload.js",
+      "community": 26,
+      "community_name": "leaveRoutes.js",
       "norm_label": "upload"
     },
     {
@@ -5851,8 +5796,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_seeddepartments",
-      "community": 20,
-      "community_name": "User.js",
+      "community": 19,
+      "community_name": "Department.js",
       "norm_label": "seeddepartments.js"
     },
     {
@@ -5862,8 +5807,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "server_seeddepartments_mongoose",
-      "community": 20,
-      "community_name": "User.js",
+      "community": 19,
+      "community_name": "Department.js",
       "norm_label": "mongoose"
     },
     {
@@ -5873,8 +5818,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "server_seeddepartments_department",
-      "community": 20,
-      "community_name": "User.js",
+      "community": 19,
+      "community_name": "Department.js",
       "norm_label": "department"
     },
     {
@@ -5884,8 +5829,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "server_seeddepartments_departments",
-      "community": 20,
-      "community_name": "User.js",
+      "community": 19,
+      "community_name": "Department.js",
       "norm_label": "departments"
     },
     {
@@ -5895,8 +5840,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "server_seeddepartments_seeddepartments",
-      "community": 20,
-      "community_name": "User.js",
+      "community": 19,
+      "community_name": "Department.js",
       "norm_label": "seeddepartments()"
     },
     {
@@ -6027,8 +5972,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "server_utils_emailservice_sendotpemail",
-      "community": 15,
-      "community_name": "authController.test.js",
+      "community": 13,
+      "community_name": "authController.js",
       "norm_label": "sendotpemail()"
     },
     {
@@ -6038,8 +5983,8 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "server_utils_emailservice_generateotp",
-      "community": 15,
-      "community_name": "authController.test.js",
+      "community": 13,
+      "community_name": "authController.js",
       "norm_label": "generateotp()"
     },
     {
@@ -6217,50 +6162,6 @@
       "community": 9,
       "community_name": "analyticsController.js",
       "norm_label": "calculateoverlapdays()"
-    },
-    {
-      "label": "SKILL.md",
-      "file_type": "document",
-      "source_file": ".agents/skills/graphify/SKILL.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "agents_skills_graphify_skill",
-      "community": 26,
-      "community_name": "leaveRoutes.js",
-      "norm_label": "skill.md"
-    },
-    {
-      "label": "/graphify",
-      "file_type": "document",
-      "source_file": ".agents/skills/graphify/SKILL.md",
-      "source_location": "L6",
-      "_origin": "ast",
-      "id": "agents_skills_graphify_skill_graphify",
-      "community": 26,
-      "community_name": "leaveRoutes.js",
-      "norm_label": "/graphify"
-    },
-    {
-      "label": "Usage",
-      "file_type": "document",
-      "source_file": ".agents/skills/graphify/SKILL.md",
-      "source_location": "L10",
-      "_origin": "ast",
-      "id": "agents_skills_graphify_skill_usage",
-      "community": 26,
-      "community_name": "leaveRoutes.js",
-      "norm_label": "usage"
-    },
-    {
-      "label": "What graphify is for",
-      "file_type": "document",
-      "source_file": ".agents/skills/graphify/SKILL.md",
-      "source_location": "L22",
-      "_origin": "ast",
-      "id": "agents_skills_graphify_skill_what_graphify_is_for",
-      "community": 26,
-      "community_name": "leaveRoutes.js",
-      "norm_label": "what graphify is for"
     },
     {
       "label": "AGENTS.md",
@@ -6995,8 +6896,8 @@
       "source_location": "L1192",
       "_origin": "ast",
       "id": "api_analytics",
-      "community": 48,
-      "community_name": "LeaveTracker API Reference",
+      "community": 70,
+      "community_name": "Analytics",
       "norm_label": "analytics"
     },
     {
@@ -7006,8 +6907,8 @@
       "source_location": "L1196",
       "_origin": "ast",
       "id": "api_get_analytics_hod",
-      "community": 48,
-      "community_name": "LeaveTracker API Reference",
+      "community": 70,
+      "community_name": "Analytics",
       "norm_label": "`get /analytics/hod`"
     },
     {
@@ -7017,8 +6918,8 @@
       "source_location": "L1220",
       "_origin": "ast",
       "id": "api_get_analytics_hr",
-      "community": 48,
-      "community_name": "LeaveTracker API Reference",
+      "community": 70,
+      "community_name": "Analytics",
       "norm_label": "`get /analytics/hr`"
     },
     {
@@ -8430,28 +8331,6 @@
       "norm_label": "sqa-8: unauthorized member leave history access by regular employees (backend)"
     },
     {
-      "label": "SQA-9: Numeric OTP Input Crashes verifyOTP with 500 TypeError (Backend)",
-      "file_type": "document",
-      "source_file": "docs/jira_bug_tracker.md",
-      "source_location": "L65",
-      "_origin": "ast",
-      "id": "docs_jira_bug_tracker_sqa_9_numeric_otp_input_crashes_verifyotp_with_500_typeerror_backend",
-      "community": 30,
-      "community_name": "Logged Bugs",
-      "norm_label": "sqa-9: numeric otp input crashes verifyotp with 500 typeerror (backend)"
-    },
-    {
-      "label": "SQA-10: HoD Analytics Crashes on Null Department Dereference (Backend)",
-      "file_type": "document",
-      "source_file": "docs/jira_bug_tracker.md",
-      "source_location": "L71",
-      "_origin": "ast",
-      "id": "docs_jira_bug_tracker_sqa_10_hod_analytics_crashes_on_null_department_dereference_backend",
-      "community": 30,
-      "community_name": "Logged Bugs",
-      "norm_label": "sqa-10: hod analytics crashes on null department dereference (backend)"
-    },
-    {
       "label": "test_documentation.md",
       "file_type": "document",
       "source_file": "docs/test_documentation.md",
@@ -8532,7 +8411,7 @@
       "label": "6. Current State of Test Coverage",
       "file_type": "document",
       "source_file": "docs/test_documentation.md",
-      "source_location": "L115",
+      "source_location": "L113",
       "_origin": "ast",
       "id": "docs_test_documentation_6_current_state_of_test_coverage",
       "community": 46,
@@ -8543,7 +8422,7 @@
       "label": "Backend Coverage Report",
       "file_type": "document",
       "source_file": "docs/test_documentation.md",
-      "source_location": "L118",
+      "source_location": "L116",
       "_origin": "ast",
       "id": "docs_test_documentation_backend_coverage_report",
       "community": 46,
@@ -8554,7 +8433,7 @@
       "label": "Frontend Coverage Report",
       "file_type": "document",
       "source_file": "docs/test_documentation.md",
-      "source_location": "L131",
+      "source_location": "L129",
       "_origin": "ast",
       "id": "docs_test_documentation_frontend_coverage_report",
       "community": 46,
@@ -8565,7 +8444,7 @@
       "label": "7. Defect Tracking",
       "file_type": "document",
       "source_file": "docs/test_documentation.md",
-      "source_location": "L141",
+      "source_location": "L139",
       "_origin": "ast",
       "id": "docs_test_documentation_7_defect_tracking",
       "community": 46,
@@ -13530,98 +13409,6 @@
       "_origin": "ast",
       "source": "server_index",
       "target": "server_config_db",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "server/controllers/__tests__/analyticsController.test.js",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "server_controllers_tests_analyticscontroller_test",
-      "target": "server_controllers_analyticscontroller",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "server/controllers/__tests__/analyticsController.test.js",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "server_controllers_tests_analyticscontroller_test",
-      "target": "server_controllers_analyticscontroller_gethodanalytics",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "server/controllers/__tests__/analyticsController.test.js",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "server_controllers_tests_analyticscontroller_test",
-      "target": "server_controllers_tests_analyticscontroller_test_gethodanalytics",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "server/controllers/__tests__/analyticsController.test.js",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "server_controllers_tests_analyticscontroller_test",
-      "target": "server_controllers_tests_analyticscontroller_test_leaverequest",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "server/controllers/__tests__/analyticsController.test.js",
-      "source_location": "L9",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "server_controllers_tests_analyticscontroller_test",
-      "target": "server_controllers_tests_analyticscontroller_test_makeres",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "server/controllers/__tests__/analyticsController.test.js",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "server_controllers_tests_analyticscontroller_test",
-      "target": "server_controllers_tests_analyticscontroller_test_user",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "server/controllers/__tests__/analyticsController.test.js",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "server_controllers_tests_analyticscontroller_test",
-      "target": "server_models_leaverequest",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "server/controllers/__tests__/analyticsController.test.js",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "server_controllers_tests_analyticscontroller_test",
-      "target": "server_models_user",
       "confidence_score": 1.0
     },
     {
@@ -18692,39 +18479,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": ".agents/skills/graphify/SKILL.md",
-      "source_location": "L6",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "agents_skills_graphify_skill",
-      "target": "agents_skills_graphify_skill_graphify",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".agents/skills/graphify/SKILL.md",
-      "source_location": "L10",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "agents_skills_graphify_skill_graphify",
-      "target": "agents_skills_graphify_skill_usage",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".agents/skills/graphify/SKILL.md",
-      "source_location": "L22",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "agents_skills_graphify_skill_graphify",
-      "target": "agents_skills_graphify_skill_what_graphify_is_for",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "AGENTS.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -20750,17 +20504,6 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/jira_bug_tracker.md",
-      "source_location": "L71",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_jira_bug_tracker_logged_bugs",
-      "target": "docs_jira_bug_tracker_sqa_10_hod_analytics_crashes_on_null_department_dereference_backend",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/jira_bug_tracker.md",
       "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
@@ -20848,17 +20591,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "docs/jira_bug_tracker.md",
-      "source_location": "L65",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_jira_bug_tracker_logged_bugs",
-      "target": "docs_jira_bug_tracker_sqa_9_numeric_otp_input_crashes_verifyotp_with_500_typeerror_backend",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "docs/test_documentation.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -20926,7 +20658,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/test_documentation.md",
-      "source_location": "L115",
+      "source_location": "L113",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_test_documentation_test_documentation_sqa_lab",
@@ -20937,7 +20669,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/test_documentation.md",
-      "source_location": "L141",
+      "source_location": "L139",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_test_documentation_test_documentation_sqa_lab",
@@ -20948,7 +20680,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/test_documentation.md",
-      "source_location": "L118",
+      "source_location": "L116",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_test_documentation_6_current_state_of_test_coverage",
@@ -20959,7 +20691,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/test_documentation.md",
-      "source_location": "L131",
+      "source_location": "L129",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_test_documentation_6_current_state_of_test_coverage",
@@ -21034,5 +20766,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "e00cd5c31ee64fe7e9755227eb1d9b846772ee1f"
+  "built_at_commit": "d49692019127f01d2ee3bef32931c3938d2e1e2e"
 }

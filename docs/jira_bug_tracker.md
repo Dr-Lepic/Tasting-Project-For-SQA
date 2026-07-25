@@ -62,3 +62,16 @@ This document organizes the Jira board for the SQA lab course. It lists the bugs
 - **Description**: The `getMemberHistory` endpoint in `leaveController.js` is documented and intended for HoD and HR access only, but lacks role and department authorization checks on `req.user`. A regular employee can view any other employee's private leave history by passing their `userId`.
 - **Failing Test ID**: TC-90
 
+### SQA-9: Numeric OTP Input Crashes verifyOTP with 500 TypeError (Backend)
+- **Status**: To Do
+- **Severity**: Medium
+- **Description**: The `verifyOTP` endpoint in `authController.js` attempts `otp.trim()` on `req.body.otp`. If a client passes a number instead of a string (e.g. `{ otp: 123456 }`), Node/Express crashes with an unhandled `TypeError: otp.trim is not a function`, returning 500 Server Error instead of 400 Bad Request.
+- **Failing Test ID**: TC-91
+
+### SQA-10: HoD Analytics Crashes on Null Department Dereference (Backend)
+- **Status**: To Do
+- **Severity**: High
+- **Description**: The `getHoDAnalytics` endpoint in `analyticsController.js` accesses `currentUser.department._id` directly after verifying the user has the `HoD` role. If `department` is null or unassigned, it throws an unhandled `TypeError: Cannot read properties of null (reading '_id')`, crashing with a 500 Server Error.
+- **Failing Test ID**: TC-92
+
+

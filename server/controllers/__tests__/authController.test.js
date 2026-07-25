@@ -48,4 +48,18 @@ describe('authController forgot password case-sensitivity regression', () => {
       expect.objectContaining({ message: 'OTP sent successfully to your email' })
     );
   });
+
+  test('TC-91: verifyOTP should reject numeric OTP input with 400 Bad Request instead of throwing 500 error', async () => {
+    const req = { body: { email: 'test@iut-dhaka.edu', otp: 123456 } };
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+
+    OTP.findOne.mockResolvedValue({ email: 'test@iut-dhaka.edu', otp: '123456', attempts: 0 });
+
+    await authController.verifyOTP(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+  });
 });

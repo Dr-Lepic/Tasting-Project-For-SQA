@@ -109,6 +109,8 @@ The project follows a **Behavior-Driven Development (BDD)** and **Test-Driven De
 | TC-88 | (NEW) Assign HoD role by Employee (Bug SQA-2) | Employee Logged in | Call role update API | 403 Forbidden | 200 OK | Fail |
 | TC-89 | (NEW) Employee resets leave quota (Bug SQA-4) | Employee Logged in | Call quota reset API | 403 Forbidden | Executed | Fail |
 | TC-90 | (NEW) Unauthorized member leave history access (Bug SQA-8) | Employee Logged in | Call member history API for another user | 403 Forbidden | 200 OK with private member leave data | Fail |
+| TC-91 | (NEW) Numeric OTP input handling in verifyOTP (Bug SQA-9) | OTP record exists | Submit numeric OTP `{ email, otp: 123456 }` | 400 Bad Request | 500 TypeError crash on `otp.trim()` | Fail |
+| TC-92 | (NEW) Missing department handling in getHoDAnalytics (Bug SQA-10) | HoD user with null department | Call HoD analytics API | 400/404 Error handling | 500 TypeError crash on `currentUser.department._id` | Fail |
 
 ## 6. Current State of Test Coverage
 Based on the latest automated test runs, here is the current snapshot of our test coverage metrics. 
@@ -116,9 +118,9 @@ Based on the latest automated test runs, here is the current snapshot of our tes
 ### Backend Coverage Report
 | Module | % Stmts | % Branch | % Funcs | % Lines |
 |---|---|---|---|---|
-| **All files** | **45.66** | **33.80** | **33.33** | **45.81** |
+| **All files** | **40.85** | **28.31** | **23.96** | **41.27** |
 | `config` | 100 | 100 | 100 | 100 |
-| `controllers` | 41.31 | 34.21 | 39.28 | 41.53 |
+| `controllers` | 36.04 | 28.21 | 24.73 | 36.52 |
 | `middleware` | 73.91 | 37.50 | 50.00 | 73.91 |
 | `models` | 61.11 | 0 | 0 | 61.11 |
 | `routes` | 100 | 100 | 100 | 100 |
