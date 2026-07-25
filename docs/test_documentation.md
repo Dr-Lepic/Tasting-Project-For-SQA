@@ -111,6 +111,7 @@ The project follows a **Behavior-Driven Development (BDD)** and **Test-Driven De
 | TC-90 | (NEW) Unauthorized member leave history access (Bug SQA-8) | Employee Logged in | Call member history API for another user | 403 Forbidden | 200 OK with private member leave data | Fail |
 | TC-91 | (NEW) Numeric OTP input handling in verifyOTP (Bug SQA-9) | OTP record exists | Submit numeric OTP `{ email, otp: 123456 }` | 400 Bad Request | 500 TypeError crash on `otp.trim()` | Fail |
 | TC-92 | (NEW) Missing department handling in getHoDAnalytics (Bug SQA-10) | HoD user with null department | Call HoD analytics API | 400/404 Error handling | 500 TypeError crash on `currentUser.department._id` | Fail |
+| TC-93 | (NEW) StrictPopulateError in getDepartmentById (Bug SQA-11) | Valid Dept ID | Call `/departments/:id` | 200 OK with dept object | 500 Server Error | Fail |
 
 ## 6. Current State of Test Coverage
 Based on the latest automated test runs, here is the current snapshot of our test coverage metrics. 

@@ -74,4 +74,9 @@ This document organizes the Jira board for the SQA lab course. It lists the bugs
 - **Description**: The `getHoDAnalytics` endpoint in `analyticsController.js` accesses `currentUser.department._id` directly after verifying the user has the `HoD` role. If `department` is null or unassigned, it throws an unhandled `TypeError: Cannot read properties of null (reading '_id')`, crashing with a 500 Server Error.
 - **Failing Test ID**: TC-92
 
+### SQA-11: StrictPopulateError in Department Details (Backend)
+- **Status**: To Do
+- **Severity**: High
+- **Description**: The `getDepartmentById` endpoint attempts to call `.populate("hod")` on the Department model query. Since the `hod` field does not exist in the Mongoose schema, this immediately throws a `StrictPopulateError`, crashing the request with a 500 Server Error.
+- **Failing Test ID**: TC-93
 

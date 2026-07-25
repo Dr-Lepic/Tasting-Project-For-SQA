@@ -7,11 +7,26 @@
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:5001/api",
+      "value": "http://localhost:5000/api",
       "type": "string"
     },
     {
       "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hod_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hr_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "dept_id",
       "value": "",
       "type": "string"
     }
@@ -21,7 +36,7 @@
       "name": "Authentication",
       "item": [
         {
-          "name": "Register User",
+          "name": "Register User (Expect 400 if exists)",
           "request": {
             "method": "POST",
             "header": [
@@ -42,7 +57,33 @@
             },
             "body": {
               "mode": "formdata",
-              "formdata": []
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "New Test User",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "testuser123@iut-dhaka.edu",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "StrongPass1",
+                  "type": "text"
+                },
+                {
+                  "key": "designation",
+                  "value": "Lecturer",
+                  "type": "text"
+                },
+                {
+                  "key": "departmentId",
+                  "value": "65f0e1a5d1a0e2a11e123456",
+                  "type": "text"
+                }
+              ]
             }
           },
           "response": [],
@@ -52,9 +93,10 @@
               "script": {
                 "exec": [
                   "",
-                  "pm.test(\"Status code is OK (200/201)\", function () {",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "pm.test(\"Status code is 201 or 400\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([201, 400]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -66,7 +108,7 @@
           ]
         },
         {
-          "name": "Login",
+          "name": "Login - Employee",
           "request": {
             "method": "POST",
             "header": [
@@ -87,7 +129,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"alice@iut-dhaka.edu\",\n  \"password\": \"StrongPass1\"\n}",
+              "raw": "{\n  \"email\": \"sabbirahmed@iut-dhaka.edu\",\n  \"password\": \"Cse123\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -102,19 +144,23 @@
               "script": {
                 "exec": [
                   "",
-                  "pm.test(\"Status code is OK (200/201)\", function () {",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
                   "});",
-                  "pm.test(\"Response time is less than 1000ms\", function () {",
-                  "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+                  "pm.test(\"User has Employee role\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.user.roles).to.include(\"Employee\");",
                   "});",
-                  "",
-                  "",
                   "if(pm.response.code === 200) {",
                   "    var jsonData = pm.response.json();",
                   "    pm.environment.set(\"token\", jsonData.token);",
                   "    pm.collectionVariables.set(\"token\", jsonData.token);",
-                  "}"
+                  "}",
+                  "",
+                  "pm.test(\"Response time is less than 1000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+                  "});",
+                  ""
                 ],
                 "type": "text/javascript"
               }
@@ -122,7 +168,119 @@
           ]
         },
         {
-          "name": "Get Profile",
+          "name": "Login - HoD",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"hasibulkarim@iut-dhaka.edu\",\n  \"password\": \"Cse123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "if(pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"hod_token\", jsonData.token);",
+                  "    pm.collectionVariables.set(\"hod_token\", jsonData.token);",
+                  "}",
+                  "",
+                  "pm.test(\"Response time is less than 1000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login - HR",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"wahidazhar@iut-dhaka.edu\",\n  \"password\": \"LeaveTracker123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "if(pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"hr_token\", jsonData.token);",
+                  "    pm.collectionVariables.set(\"hr_token\", jsonData.token);",
+                  "}",
+                  "",
+                  "pm.test(\"Response time is less than 1000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Profile (Employee Token)",
           "request": {
             "method": "GET",
             "header": [
@@ -159,9 +317,12 @@
               "script": {
                 "exec": [
                   "",
-                  "pm.test(\"Status code is OK (200/201)\", function () {",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Email matches Employee\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.user.email).to.eql(\"sabbirahmed@iut-dhaka.edu\");",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -194,7 +355,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"alice@iut-dhaka.edu\"\n}",
+              "raw": "{\n  \"email\": \"sabbirahmed@iut-dhaka.edu\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -209,9 +370,9 @@
               "script": {
                 "exec": [
                   "",
-                  "pm.test(\"Status code is OK (200/201)\", function () {",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
-                  "});",
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -223,7 +384,7 @@
           ]
         },
         {
-          "name": "Verify OTP",
+          "name": "Verify OTP (Expect 400 invalid)",
           "request": {
             "method": "POST",
             "header": [
@@ -244,7 +405,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"alice@iut-dhaka.edu\",\n  \"otp\": \"123456\"\n}",
+              "raw": "{\n  \"email\": \"sabbirahmed@iut-dhaka.edu\",\n  \"otp\": \"123456\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -259,9 +420,9 @@
               "script": {
                 "exec": [
                   "",
-                  "pm.test(\"Status code is OK (200/201)\", function () {",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
-                  "});",
+                  "pm.test(\"Status is 400 (Invalid OTP)\", function () { pm.response.to.have.status(400); });",
+                  "",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -273,7 +434,7 @@
           ]
         },
         {
-          "name": "Reset Password",
+          "name": "Reset Password (Expect 400 not verified)",
           "request": {
             "method": "POST",
             "header": [
@@ -294,7 +455,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"alice@iut-dhaka.edu\",\n  \"newPassword\": \"NewStrongPass1\"\n}",
+              "raw": "{\n  \"email\": \"sabbirahmed@iut-dhaka.edu\",\n  \"newPassword\": \"Cse123\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -309,9 +470,9 @@
               "script": {
                 "exec": [
                   "",
-                  "pm.test(\"Status code is OK (200/201)\", function () {",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
-                  "});",
+                  "pm.test(\"Status is 400 (OTP not verified)\", function () { pm.response.to.have.status(400); });",
+                  "",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -353,14 +514,14 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
-                  "pm.test(\"Status code is OK (200/201)\", function () {",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
-                  "});",
-                  "pm.test(\"Response time is less than 1000ms\", function () {",
-                  "    pm.expect(pm.response.responseTime).to.be.below(1000);",
-                  "});",
-                  ""
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response contains array of departments\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.departments).to.be.an(\"array\");",
+                  "    if (jsonData.departments.length > 0) {",
+                  "        pm.environment.set(\"dept_id\", jsonData.departments[0]._id);",
+                  "    }",
+                  "});"
                 ],
                 "type": "text/javascript"
               }
@@ -378,13 +539,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/departments/65f0e1a5d1a0e2a11e123456",
+              "raw": "{{baseUrl}}/departments/{{dept_id}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "departments",
-                "65f0e1a5d1a0e2a11e123456"
+                "{{dept_id}}"
               ]
             },
             "auth": {
@@ -404,14 +565,11 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
-                  "pm.test(\"Status code is OK (200/201)\", function () {",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
-                  "});",
-                  "pm.test(\"Response time is less than 1000ms\", function () {",
-                  "    pm.expect(pm.response.responseTime).to.be.below(1000);",
-                  "});",
-                  ""
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Department object is populated\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.department).to.have.property(\"_id\");",
+                  "});"
                 ],
                 "type": "text/javascript"
               }
@@ -460,10 +618,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -511,10 +669,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -572,10 +730,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -623,10 +781,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -676,10 +834,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -728,10 +886,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -779,10 +937,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -830,10 +988,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -881,10 +1039,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -941,10 +1099,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1001,10 +1159,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1061,10 +1219,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1112,10 +1270,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1163,10 +1321,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1215,10 +1373,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1266,10 +1424,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1317,10 +1475,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1378,10 +1536,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1430,10 +1588,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1481,10 +1639,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1543,10 +1701,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1594,10 +1752,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1650,10 +1808,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1710,10 +1868,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1771,10 +1929,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1822,10 +1980,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1877,10 +2035,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1928,10 +2086,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -1987,10 +2145,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -2047,10 +2205,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -2098,10 +2256,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -2153,10 +2311,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -2213,10 +2371,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -2269,10 +2427,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -2320,10 +2478,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -2376,10 +2534,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
@@ -2427,10 +2585,10 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "",
                   "pm.test(\"Status code is OK (200/201)\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
+                  "",
                   "pm.test(\"Response time is less than 1000ms\", function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1000);",
                   "});",
