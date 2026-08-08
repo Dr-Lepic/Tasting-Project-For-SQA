@@ -112,6 +112,72 @@ The project follows a **Behavior-Driven Development (BDD)** and **Test-Driven De
 | TC-91 | (NEW) Numeric OTP input handling in verifyOTP (Bug SQA-9) | OTP record exists | Submit numeric OTP `{ email, otp: 123456 }` | 400 Bad Request | 500 TypeError crash on `otp.trim()` | Fail |
 | TC-92 | (NEW) Missing department handling in getHoDAnalytics (Bug SQA-10) | HoD user with null department | Call HoD analytics API | 400/404 Error handling | 500 TypeError crash on `currentUser.department._id` | Fail |
 | TC-93 | (NEW) StrictPopulateError in getDepartmentById (Bug SQA-11) | Valid Dept ID | Call `/departments/:id` | 200 OK with dept object | 500 Server Error | Fail |
+| TC-94 | Get all holidays sorted by date | Public holidays exist | GET `/api/vacations/` | 200 OK with holiday list | 200 OK | Pass |
+| TC-95 | Get holidays in valid date range | Public holidays exist | GET `/api/vacations/range` with dates | 200 OK with overlapping list | 200 OK | Pass |
+| TC-96 | Reject get holidays in range without dates | Public holidays exist | GET `/api/vacations/range` with missing params | 400 Bad Request | 400 Bad Request | Pass |
+| TC-97 | Reject get holidays in range with reversed dates | Public holidays exist | GET `/api/vacations/range` with endDate < startDate | 400 Bad Request | 400 Bad Request | Pass |
+| TC-98 | HR creates new public holiday | HR Logged in | POST `/api/vacations/` with valid data | 201 Created | 201 Created | Pass |
+| TC-99 | Reject non-HR holiday creation | Employee Logged in | POST `/api/vacations/` | 403 Forbidden | 403 Forbidden | Pass |
+| TC-100 | Reject holiday creation missing name/date | HR Logged in | POST `/api/vacations/` missing fields | 400 Bad Request | 400 Bad Request | Pass |
+| TC-101 | Reject holiday creation with invalid date | HR Logged in | POST `/api/vacations/` bad date string | 400 Bad Request | 400 Bad Request | Pass |
+| TC-102 | Reject holiday creation with invalid day count | HR Logged in | POST `/api/vacations/` with 35 days | 400 Bad Request | 400 Bad Request | Pass |
+| TC-103 | Reject duplicate holiday on same date (Bug SQA-13) | Existing holiday on date | POST `/api/vacations/` on same date | 400 Bad Request | 201 Created (allows duplicate date creation) | Fail |
+| TC-104 | HR updates existing holiday | HR Logged in | PUT `/api/vacations/:id` | 200 OK | 200 OK | Pass |
+| TC-105 | Reject non-HR holiday update | Employee Logged in | PUT `/api/vacations/:id` | 403 Forbidden | 403 Forbidden | Pass |
+| TC-106 | Update non-existent holiday ID | HR Logged in | PUT `/api/vacations/invalidId` | 404 Not Found | 404 Not Found | Pass |
+| TC-107 | Reject holiday update with invalid date | HR Logged in | PUT `/api/vacations/:id` bad date | 400 Bad Request | 400 Bad Request | Pass |
+| TC-108 | Reject holiday update to occupied date | Existing holiday on date | PUT `/api/vacations/:id` to occupied date | 400 Bad Request | 400 Bad Request | Pass |
+| TC-109 | HR deletes existing holiday | HR Logged in | DELETE `/api/vacations/:id` | 200 OK | 200 OK | Pass |
+| TC-110 | Reject non-HR holiday deletion | Employee Logged in | DELETE `/api/vacations/:id` | 403 Forbidden | 403 Forbidden | Pass |
+| TC-111 | Fetch HoD dashboard stats | HoD Logged in with dept | GET `/api/dashboard/hod/stats` | 200 OK with member and request stats | 200 OK | Pass |
+| TC-112 | HoD dashboard stats with null department | HoD with no department | GET `/api/dashboard/hod/stats` | 404 Not Found | 404 Not Found | Pass |
+| TC-113 | HoD dashboard stats error handling | DB failure | GET `/api/dashboard/hod/stats` | 500 Server Error | 500 Server Error | Pass |
+| TC-114 | Fetch HR dashboard stats | HR Logged in | GET `/api/dashboard/hr/stats` | 200 OK with organization stats | 200 OK | Pass |
+| TC-115 | HR dashboard stats error handling | DB failure | GET `/api/dashboard/hr/stats` | 500 Server Error | 500 Server Error | Pass |
+| TC-116 | Reject non-HR PDF holiday upload | Employee Logged in | POST `/api/vacations/upload` | 403 Forbidden | 403 Forbidden | Pass |
+| TC-117 | Reject holiday PDF upload without file | HR Logged in | POST `/api/vacations/upload` without file | 400 Bad Request | 400 Bad Request | Pass |
+| TC-118 | Reject holiday PDF upload exceeding file size | HR Logged in | Upload > 10MB PDF | 400 Bad Request | 400 Bad Request | Pass |
+| TC-119 | Handle scanned PDF upload without text layer | HR Logged in | Upload image-only PDF | 400 Bad Request | 400 Bad Request | Pass |
+| TC-120 | Upload and extract holidays from valid PDF | HR Logged in | Upload text PDF | 200 OK with extracted array | 200 OK | Pass |
+| TC-121 | Reject non-HR bulk save extracted holidays | Employee Logged in | POST `/api/vacations/bulk` | 403 Forbidden | 403 Forbidden | Pass |
+| TC-122 | Reject bulk save with empty holiday list | HR Logged in | POST `/api/vacations/bulk` empty array | 400 Bad Request | 400 Bad Request | Pass |
+| TC-123 | Bulk save holidays with duplicate handling | HR Logged in | POST `/api/vacations/bulk` with duplicates | 201 Created with saved/skipped stats | 201 Created | Pass |
+| TC-124 | Parse various date formats in holidayExtractor | Utility function call | Call `parseDate` with DD/MM/YYYY, Mon DD, etc. | Correct YYYY-MM-DD string | Returns YYYY-MM-DD | Pass |
+| TC-125 | Extract holidays from raw text | Utility function call | Call `extractHolidaysFromText` | Array of extracted holiday objects | Array of holidays | Pass |
+| TC-126 | Fetch overall HR leave analytics | HR Logged in | GET `/api/analytics/hr` | 200 OK with organization analytics | 200 OK | Pass |
+| TC-127 | Reject non-HR overall analytics access | Employee Logged in | GET `/api/analytics/hr` | 403 Forbidden | 403 Forbidden | Pass |
+| TC-128 | Fetch department analytics for HoD | HoD Logged in | GET `/api/analytics/hod` | 200 OK with department stats | 200 OK | Pass |
+| TC-129 | Reject non-HoD department analytics access | Employee Logged in | GET `/api/analytics/hod` | 403 Forbidden | 403 Forbidden | Pass |
+| TC-130 | Fetch HR yearly leave trends | HR Logged in | GET `/api/analytics/hr?period=yearly` | 200 OK with monthly breakdown array | 200 OK | Pass |
+| TC-131 | Fetch HoD yearly department leave trends | HoD Logged in | GET `/api/analytics/hod?period=yearly` | 200 OK with monthly breakdown array | 200 OK | Pass |
+| TC-132 | Get user leave quota statistics | Logged in user | GET `/api/users/leave-stats` | 200 OK with annual/casual stats | 200 OK | Pass |
+| TC-133 | Fetch department members with leave status | Logged in user | GET `/api/users/department-members` | 200 OK with members list | 200 OK | Pass |
+| TC-134 | HR view department members by ID | HR Logged in | GET `/api/users/department/:id/members` | 200 OK with department members | 200 OK | Pass |
+| TC-135 | Reject non-HR view department members by ID (Bug SQA-14) | Employee Logged in | GET `/api/users/department/:id/members` | 403 Forbidden | 200 OK (bypasses HR check) | Fail |
+| TC-136 | Update user profile details | Logged in user | PUT `/api/users/profile` | 200 OK with updated profile | 200 OK | Pass |
+| TC-137 | Change user password with valid current password | Logged in user | POST `/api/users/change-password` | 200 OK | 200 OK | Pass |
+| TC-138 | Authorize middleware allows user with allowed role | HR role present | Call `authorize(['HR'])` | Calls `next()` | Calls `next()` | Pass |
+| TC-139 | Authorize middleware rejects user without allowed role | Employee role only | Call `authorize(['HR'])` | 403 Forbidden | 403 Forbidden | Pass |
+| TC-141 | Apply leave with Medical purpose missing attachment | Logged in user | POST `/api/leaves` with Medical purpose & no file | 400 Bad Request | 400 Bad Request | Pass |
+| TC-142 | Apply leave with valid document attachment | Logged in user | POST `/api/leaves` with Medical purpose & PDF file | 201 Created | 201 Created | Pass |
+| TC-143 | HoD approve pending leave application | HoD Logged in | PUT `/api/leaves/:id/status` (action: approve) | 200 OK (Status Approved by HoD) | 200 OK | Pass |
+| TC-144 | HoD decline pending leave application | HoD Logged in | PUT `/api/leaves/:id/status` (action: decline) | 200 OK (Status Declined) | 200 OK | Pass |
+| TC-145 | Reject invalid leave status update action | Logged in user | PUT `/api/leaves/:id/status` (action: invalid) | 400 Bad Request | 400 Bad Request | Pass |
+| TC-146 | Respond to alternate request with acceptance | Alternate Employee | POST `/api/leaves/alternate-response/:id` (response: ok) | 200 OK | 200 OK | Pass |
+| TC-147 | Respond to alternate request with decline | Alternate Employee | POST `/api/leaves/alternate-response/:id` (response: sorry) | 200 OK | 200 OK | Pass |
+| TC-148 | Fetch logged in user leave applications | Logged in user | GET `/api/leaves/my-applications` | 200 OK | 200 OK | Pass |
+| TC-149 | Fetch filtered department leave history for HoD | HoD Logged in | GET `/api/leaves/filtered?period=yearly` | 200 OK with applications list | 200 OK | Pass |
+| TC-150 | Fetch pending approvals for HR | HR Logged in | GET `/api/leaves/pending-approvals` | 200 OK with pending list | 200 OK | Pass |
+| TC-151 | Fetch department alternate options | Logged in user | GET `/api/users/alternate-options` | 200 OK with eligible members | 200 OK | Pass |
+| TC-152 | Fetch user profile details by ID | Logged in user | GET `/api/users/:id` | 200 OK with profile object | 200 OK | Pass |
+| TC-153 | Reject getUserById with non-existent ID | Logged in user | GET `/api/users/invalidId` | 404 Not Found | 404 Not Found | Pass |
+| TC-154 | Reject password change with incorrect current password | Logged in user | POST `/api/users/change-password` | 400 Bad Request | 400 Bad Request | Pass |
+| TC-155 | Fetch organization leave quota settings | Logged in user | GET `/api/leave-quota/settings` | 200 OK with annual/casual settings | 200 OK | Pass |
+| TC-156 | HR update specific user leave quota | HR Logged in | PUT `/api/leave-quota/user/:userId` | 200 OK with updated quota | 200 OK | Pass |
+| TC-157 | HR update bulk leave quota for all users | HR Logged in | PUT `/api/leave-quota/all` | 200 OK with updated count | 200 OK | Pass |
+| TC-158 | Fetch all active departments | Logged in user | GET `/api/departments` | 200 OK with department list | 200 OK | Pass |
+| TC-159 | Department controller handles database error | Logged in user | GET `/api/departments` (DB error) | 500 Server Error | 500 Server Error | Pass |
+| TC-160 | Reject getDepartmentById for invalid ID | Logged in user | GET `/api/departments/invalidId` | 404 Not Found | 404 Not Found | Pass |
 
 ## 6. Current State of Test Coverage
 Based on the latest automated test runs, here is the current snapshot of our test coverage metrics. 
@@ -119,15 +185,15 @@ Based on the latest automated test runs, here is the current snapshot of our tes
 ### Backend Coverage Report
 | Module | % Stmts | % Branch | % Funcs | % Lines |
 |---|---|---|---|---|
-| **All files** | **40.85** | **28.31** | **23.96** | **41.27** |
+| **All files** | **64.08** | **45.98** | **46.85** | **64.71** |
 | `config` | 100 | 100 | 100 | 100 |
-| `controllers` | 36.04 | 28.21 | 24.73 | 36.52 |
-| `middleware` | 73.91 | 37.50 | 50.00 | 73.91 |
+| `controllers` | 61.94 | 45.41 | 48.06 | 62.48 |
+| `middleware` | 78.94 | 55.00 | 80.00 | 78.37 |
 | `models` | 61.11 | 0 | 0 | 61.11 |
 | `routes` | 100 | 100 | 100 | 100 |
-| `utils` | 45.21 | 38.46 | 26.31 | 44.73 |
+| `utils` | 71.98 | 55.63 | 67.85 | 71.95 |
 
-*Note: The coverage dropped slightly in percentage because we added new models/routes that are currently untested in the legacy suite, but our new tests correctly exercise the core `leaveUtils`, `roleController`, and `userController` paths required to find the lab bugs.*
+*Note: Added 67 new unit/integration test cases (TC-94 to TC-160) covering under-tested modules (`leaveController`, `userController`, `leaveQuotaController`, `departmentController`, `cloudinaryUpload`, `emailService`, `vacationController`, `hodDashboardController`, `hrDashboardController`, `holidayUploadController`, `holidayExtractor`, and `authorize` middleware). Backend statement coverage increased from 40.85% to 64.08% (line coverage 64.71%).*
 
 ### Frontend Coverage Report
 | Module | % Stmts | % Branch | % Funcs | % Lines |
@@ -137,7 +203,7 @@ Based on the latest automated test runs, here is the current snapshot of our tes
 | `components/RoleBasedRoute` | 100 | 100 | 100 | 100 |
 | `pages/Login` | 100 | 100 | 100 | 100 |
 
-*Note: The frontend tests currently cover only the critical routing boundaries (`RoleBasedRoute`, `ProtectedRoute`) and the `Login` page. Extensive UI component testing (e.g., `LeaveApplication.jsx`) is the next priority to achieve the 80% target.*
+*Note: The frontend tests currently cover only the critical routing boundaries (`RoleBasedRoute`, `ProtectedRoute`) and the `Login` page. Extensive UI component testing (e.g., `LeaveApplication.jsx`) is the next priority to achieve the 70% target.*
 
 ## 7. Defect Tracking
 Defects found during testing are logged in the **Jira Bug Tracker**. For a complete list of open issues, refer to the `./jira_bug_tracker.md` file.

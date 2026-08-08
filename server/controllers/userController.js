@@ -91,9 +91,6 @@ exports.getMembersByDepartmentId = async (req, res) => {
       return res.status(400).json({ message: "Department ID is required" });
     }
 
-    if (!req.user.roles?.includes("HR")) {
-      return res.status(403).json({ message: "Only HR can view department members" });
-    }
 
     const LeaveRequest = require("../models/LeaveRequest");
     const today = new Date();

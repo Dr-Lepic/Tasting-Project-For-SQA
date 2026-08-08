@@ -112,3 +112,33 @@ This document organizes the Jira board for the SQA lab course. It lists the bugs
 - **Expected Result**: Returns 200 OK with the populated department object.
 - **Observed Result**: API crashes with 500 Server Error due to `StrictPopulateError` for the missing `hod` path.
 - **Failing Test ID**: TC-93
+
+### SQA-12: TypeError in extractFromTableFormat on String Date (Backend)
+- **Status**: To Do
+- **Severity**: Medium
+- **Description**: The `extractFromTableFormat` function in `holidayExtractor.js` attempts to invoke `.toISOString()` on `foundDate`. However, `parseDate` returns a formatted string (`YYYY-MM-DD`) rather than a `Date` instance, causing an unhandled `TypeError: foundDate.toISOString is not a function`.
+- **Steps to Reproduce**: 1. Process document text with table format using `extractFromTableFormat("Date | Holiday Name\n2026-05-01 | May Day")`.
+- **Expected Result**: Successfully extracts holiday objects without runtime error.
+- **Observed Result**: Function crashes with `TypeError: foundDate.toISOString is not a function`.
+- **Failing Test ID**: TC-125
+
+### SQA-13: Duplicate Public Holiday Check Bypass in createHoliday (Backend)
+- **Status**: To Do
+- **Severity**: Medium
+- **Description**: The `createHoliday` function in `vacationController.js` fails to reject requests attempting to create a holiday on a date that already has an existing holiday entry.
+- **Steps to Reproduce**: 1. Log in as HR. 2. Create a holiday on date `2026-05-01`. 3. Submit another holiday creation request on the exact same date `2026-05-01`.
+- **Expected Result**: API returns 400 Bad Request with message `"A holiday already exists on this date"`.
+- **Observed Result**: API bypasses validation and returns 201 Created, creating duplicate holiday entries on the same date.
+- **Failing Test ID**: TC-103
+
+### SQA-14: HR Authorization Bypass in getMembersByDepartmentId (Backend)
+- **Status**: To Do
+- **Severity**: Critical
+- **Description**: The `getMembersByDepartmentId` endpoint in `userController.js` lacks an authorization check to verify that the requester has the HR role.
+- **Steps to Reproduce**: 1. Log in as a regular Employee user. 2. Send GET request to `/api/users/department/:departmentId/members`.
+- **Expected Result**: API returns 403 Forbidden with message `"Only HR can view department members"`.
+- **Observed Result**: API bypasses role check and returns 200 OK with private department member information.
+- **Failing Test ID**: TC-135
+
+
+

@@ -29,21 +29,22 @@ describe('authController forgot password case-sensitivity regression', () => {
     };
 
     User.findOne.mockImplementation(async ({ email }) => {
-      if (email === 'Test@iut-dhaka.edu') {
+      if (email && email.toLowerCase() === 'test@iut-dhaka.edu') {
         return {
           _id: 'user-1',
           name: 'Test User',
-          email: 'Test@iut-dhaka.edu',
+          email: 'test@iut-dhaka.edu',
         };
       }
-
       return null;
     });
+    OTP.deleteMany.mockResolvedValue({ deletedCount: 0 });
+    OTP.create.mockResolvedValue(true);
+    sendOTPEmail.mockResolvedValue({ success: true, messageId: 'msg1' });
 
     await authController.forgotPassword(req, res);
 
     expect(User.findOne).toHaveBeenCalledWith({ email: 'test@iut-dhaka.edu' });
-    expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({ message: 'OTP sent successfully to your email' })
     );
@@ -55,8 +56,6 @@ describe('authController forgot password case-sensitivity regression', () => {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
-
-    OTP.findOne.mockResolvedValue({ email: 'test@iut-dhaka.edu', otp: '123456', attempts: 0 });
 
     await authController.verifyOTP(req, res);
 

@@ -114,11 +114,6 @@ exports.createHoliday = async (req, res) => {
       }
     });
     
-    if (existingHoliday) {
-      return res.status(400).json({ 
-        message: "A holiday already exists on this date" 
-      });
-    }
 
     const holiday = new Vacation({
       name: name.trim(),
