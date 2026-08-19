@@ -84,16 +84,6 @@
   "82": "nodemon",
   "83": "streamifier",
   "84": "LeaveRequest.js",
-  "85": "routes.test.js",
-  "86": "forgot_password.test.js",
   "87": "hrDashboardController.test.js",
-  "88": "register.test.js",
-  "89": "Architecture Overview",
-  "90": "db.js",
-  "91": "bcryptjs",
-  "92": "auth.test.js",
-  "93": "employee.test.js",
-  "94": "hod.test.js",
-  "95": "hr.test.js",
-  "96": "jest.e2e.config.js"
+  "90": "db.js"
 }

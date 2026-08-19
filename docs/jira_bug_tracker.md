@@ -39,7 +39,7 @@ This document organizes the Jira board for the SQA lab course. It lists the bugs
 - **Steps to Reproduce**: 1. Open LeaveApplication form. 2. Select an end date that is earlier than the start date. 3. Submit the form.
 - **Expected Result**: Form validation prevents submission.
 - **Observed Result**: Form submits successfully to the backend without raising a UI error.
-- **Failing Test ID**: TC-82
+- **Failing Test ID**: TC-82, TC-196 (TC-B-35)
 
 ### SQA-4: HR Reset Leave Quota Accessible by Employees (Backend) ✅
 - **Status**: To Do

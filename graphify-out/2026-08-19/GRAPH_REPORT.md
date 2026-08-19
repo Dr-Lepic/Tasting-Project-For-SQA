@@ -1,16 +1,16 @@
-# Graph Report - Tasting-Project-For-SQA  (2026-08-19)
+# Graph Report - Tasting-Project-For-SQA  (2026-08-08)
 
 ## Corpus Check
-- 162 files · ~76,606 words
+- 147 files · ~69,147 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 906 nodes · 1228 edges · 97 communities (77 shown, 20 thin omitted)
+- 837 nodes · 1167 edges · 87 communities (77 shown, 10 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 23 edges (avg confidence: 0.54)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `854d750d`
+- Built from commit: `d89b3d34`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -89,14 +89,8 @@
 - nodemon
 - streamifier
 - LeaveRequest.js
-- routes.test.js
-- Architecture Overview
+- hrDashboardController.test.js
 - db.js
-- bcryptjs
-- auth.test.js
-- employee.test.js
-- hod.test.js
-- hr.test.js
 
 ## God Nodes (most connected - your core abstractions)
 1. `LeaveTracker` - 21 edges
@@ -125,24 +119,24 @@
 ## Import Cycles
 - None detected.
 
-## Communities (97 total, 20 thin omitted)
+## Communities (87 total, 10 thin omitted)
 
 ### Community 0 - "App.jsx"
-Cohesion: 0.22
-Nodes (6): ProtectedRoute(), RoleBasedRoute(), AuthContext, Login(), Register(), mockNavigate
+Cohesion: 0.06
+Nodes (45): App(), AlternateSelection(), ChangePasswordModal(), CollegueInfo(), DashboardNotification(), HoDLayout(), HoDNavbar(), HRLayout() (+37 more)
 
 ### Community 1 - "leaveController.js"
-Cohesion: 0.10
-Nodes (18): AlternateRequest, applyLeave(), LeaveHistoryLog, LeaveRequest, respondToAlternateRequest(), {
+Cohesion: 0.12
+Nodes (7): AlternateRequest, LeaveHistoryLog, LeaveRequest, {
   sendAlternateRequestEmail,
   sendApplicationStatusEmail,
   sendHoDReviewEmail,
   sendHRReviewEmail
-}, updateLeaveStatus(), { uploadToCloudinary } (+10 more)
+}, { uploadToCloudinary }, User, Vacation
 
 ### Community 2 - "devDependencies"
-Cohesion: 0.05
-Nodes (41): babel-jest, babel-plugin-react-compiler, @babel/preset-env, @babel/preset-react, chai, devDependencies, babel-jest, babel-plugin-react-compiler (+33 more)
+Cohesion: 0.06
+Nodes (35): babel-jest, babel-plugin-react-compiler, @babel/preset-env, @babel/preset-react, devDependencies, babel-jest, babel-plugin-react-compiler, @babel/preset-env (+27 more)
 
 ### Community 3 - "vacationRoutes.js"
 Cohesion: 0.06
@@ -150,15 +144,15 @@ Nodes (42): { extractHolidaysFromText, extractFromTableFormat }, extractTextFrom
 
 ### Community 4 - "dependencies"
 Cohesion: 0.06
-Nodes (33): axios, chart.js, dependencies, axios, chart.js, html2canvas, jspdf, prop-types (+25 more)
+Nodes (31): axios, chart.js, dependencies, axios, chart.js, html2canvas, jspdf, prop-types (+23 more)
 
 ### Community 5 - "hodDashboardRoutes.js"
-Cohesion: 0.05
-Nodes (30): getHoDDashboardStats(), LeaveRequest, User, getHRDashboardStats(), LeaveRequest, User, hodDashboardController, LeaveRequest (+22 more)
+Cohesion: 0.12
+Nodes (12): getHoDDashboardStats(), LeaveRequest, User, hodDashboardController, LeaveRequest, User, authorize, authMiddleware (+4 more)
 
 ### Community 6 - "dependencies"
 Cohesion: 0.13
-Nodes (15): cloudinary, express, mongoose, multer, multer-storage-cloudinary, pdf-parse, dependencies, cloudinary (+7 more)
+Nodes (15): bcryptjs, express, mongoose, multer, multer-storage-cloudinary, pdf-parse, dependencies, bcryptjs (+7 more)
 
 ### Community 7 - "server/package.json"
 Cohesion: 0.25
@@ -169,52 +163,52 @@ Cohesion: 0.17
 Nodes (3): LeaveRequest, { uploadToCloudinary, deleteFromCloudinary }, User
 
 ### Community 9 - "analyticsController.js"
-Cohesion: 0.06
-Nodes (26): { calculateOverlapDays }, Department, getHoDAnalytics(), getHRAnalytics(), LeaveRequest, User, Department, Department (+18 more)
+Cohesion: 0.20
+Nodes (10): { calculateOverlapDays }, Department, getHoDAnalytics(), getHRAnalytics(), LeaveRequest, User, authMiddleware, express (+2 more)
 
 ### Community 10 - "LeaveAnalytics.jsx"
-Cohesion: 0.28
-Nodes (10): AnalyticsHistoryModal(), BarChart(), CollapsibleSection(), StatsCard(), StatusGanttBar(), HoDAnalytics(), HRAnalytics(), analyticsAPI (+2 more)
+Cohesion: 0.25
+Nodes (11): AnalyticsHistoryModal(), BarChart(), CollapsibleSection(), StatsCard(), StatusGanttBar(), HoDAnalytics(), HRAnalytics(), analyticsAPI (+3 more)
 
 ### Community 11 - "index.js"
 Cohesion: 0.13
 Nodes (14): analyticsRoutes, app, authRoutes, connectDB, cors, corsOptions, departmentRoutes, express (+6 more)
 
 ### Community 12 - "leaveQuotaRoutes.js"
-Cohesion: 0.17
-Nodes (11): App(), Layout(), Navbar(), AuthProvider(), AlternateRequests(), ApplicationStatus(), LeaveHistory(), ForgotPassword() (+3 more)
+Cohesion: 0.22
+Nodes (8): getHRDashboardStats(), LeaveRequest, User, authMiddleware, authorize, express, { getHRDashboardStats }, router
 
 ### Community 13 - "authController.js"
-Cohesion: 0.11
-Nodes (15): bcrypt, Department, jwt, OTP, register(), { sendOTPEmail, generateOTP }, { uploadToCloudinary }, User (+7 more)
+Cohesion: 0.15
+Nodes (10): bcrypt, Department, forgotPassword(), jwt, OTP, { sendOTPEmail, generateOTP }, { uploadToCloudinary }, User (+2 more)
 
 ### Community 14 - "SystemSettings.jsx"
-Cohesion: 0.20
-Nodes (9): HoDSettings(), HolidayReviewModal(), HRLayout(), departmentConfig, HRNavbar(), LeaveQuotaSetter(), PublicHoliday(), SystemSettings() (+1 more)
+Cohesion: 0.15
+Nodes (11): AnnualLeave, CasualLeave, EmployeeHoliday(), HoDSettings(), HolidayReviewModal(), LeaveData(), LeaveQuotaSetter(), PublicHoliday() (+3 more)
 
 ### Community 15 - "authController.test.js"
-Cohesion: 0.25
-Nodes (8): forgotPassword(), authController, Department, OTP, { sendOTPEmail, generateOTP }, User, generateOTP(), sendOTPEmail()
+Cohesion: 0.22
+Nodes (7): authController, Department, OTP, { sendOTPEmail, generateOTP }, User, mongoose, otpSchema
 
 ### Community 16 - "departmentRoutes.js"
-Cohesion: 0.18
-Nodes (11): AnnualLeave, CasualLeave, ChangePasswordModal(), EmployeeHoliday(), LeaveData(), api, authAPI, departmentAPI (+3 more)
+Cohesion: 0.33
+Nodes (4): Department, LeaveRequest, mongoose, User
 
 ### Community 17 - "authController.behavior.test.js"
-Cohesion: 0.17
-Nodes (8): authController, bcrypt, Department, jwt, OTP, User, mongoose, otpSchema
+Cohesion: 0.22
+Nodes (6): authController, bcrypt, Department, jwt, OTP, User
 
 ### Community 18 - "bugRegression.test.js"
-Cohesion: 0.15
-Nodes (10): authController, leaveController, leaveQuotaController, OTP, { sendOTPEmail }, User, Vacation, leaveQuotaSchema (+2 more)
+Cohesion: 0.22
+Nodes (7): authController, leaveController, leaveQuotaController, OTP, { sendOTPEmail }, User, Vacation
 
 ### Community 19 - "Department.js"
-Cohesion: 0.07
-Nodes (17): AlternateRequest, leaveController, LeaveHistoryLog, LeaveRequest, { uploadToCloudinary }, User, Vacation, AlternateRequest (+9 more)
+Cohesion: 0.14
+Nodes (9): AlternateRequest, leaveController, LeaveHistoryLog, LeaveRequest, { uploadToCloudinary }, User, Vacation, leaveHistoryLogSchema (+1 more)
 
 ### Community 20 - "User.js"
-Cohesion: 0.20
-Nodes (8): DashboardNotification(), HoDLayout(), HoDNavbar(), PersonalInfo(), RoleToggle(), Profile(), HoDDashboard(), hodDashboardAPI
+Cohesion: 0.14
+Nodes (8): AlternateRequest, leaveController, LeaveHistoryLog, LeaveRequest, User, Vacation, alternateRequestSchema, mongoose
 
 ### Community 21 - "userRoutes.js"
 Cohesion: 0.14
@@ -245,8 +239,8 @@ Cohesion: 0.07
 Nodes (26): 1. Install Dependencies, 2. Configure Environment Files, 3. Start the App, 4. Initial Data Setup, 5. First Usage Flow (Recommended), Backend not connecting, Before You Start, Client env file (+18 more)
 
 ### Community 28 - "db.js"
-Cohesion: 0.27
-Nodes (6): CollegueInfo(), LeaveDetailsModal(), Status(), Members(), HoDDepartmentMembers(), Employees()
+Cohesion: 0.21
+Nodes (11): applyLeave(), respondToAlternateRequest(), updateLeaveStatus(), nodemailer, sendAlternateRequestEmail(), sendApplicationStatusEmail(), sendHoDReviewEmail(), sendHRReviewEmail() (+3 more)
 
 ### Community 30 - "Logged Bugs"
 Cohesion: 0.11
@@ -270,7 +264,7 @@ Nodes (10): 1. Introduction, 2. Testing Scope, 3. Test Environment Setup, 4. Tes
 
 ### Community 47 - "LeaveTracker"
 Cohesion: 0.18
-Nodes (10): Analytics Logic, Client (`client/.env`), Environment Variables, LeaveTracker, Notifications and Emails, Project Goals, Repository Structure, Role Model (+2 more)
+Nodes (10): Analytics Logic, Architecture Overview, Backend Modules, High-Level Flow, LeaveTracker, Notifications and Emails, Project Goals, Repository Structure (+2 more)
 
 ### Community 48 - "LeaveTracker API Reference"
 Cohesion: 0.15
@@ -285,8 +279,8 @@ Cohesion: 0.25
 Nodes (8): `DELETE /vacations/:holidayId`, `GET /vacations`, `GET /vacations/range`, `POST /vacations`, `POST /vacations/bulk`, `POST /vacations/upload`, `PUT /vacations/:holidayId`, Vacations and Holidays
 
 ### Community 51 - "AuthContext.jsx"
-Cohesion: 0.22
-Nodes (8): Prerequisites, Running Mocha E2E Tests, Step 1 – Install dependencies, Step 2 – Start the servers, Step 3 – Run the Mocha tests, Test file location, Troubleshooting, What to expect
+Cohesion: 0.25
+Nodes (8): register(), updateProfile(), cloudinary, deleteFromCloudinary(), streamifier, uploadToCloudinary(), cloudinary, { uploadToCloudinary, deleteFromCloudinary }
 
 ### Community 52 - "Data Model"
 Cohesion: 0.25
@@ -329,8 +323,12 @@ Cohesion: 0.40
 Nodes (5): Employee/HoD Shared, Frontend Route Map, HoD Routes, HR Routes, Public Routes
 
 ### Community 62 - "jest"
-Cohesion: 0.36
-Nodes (4): AlternateSelection(), LeaveDocument(), WarningTooltip(), LeaveApplication()
+Cohesion: 0.22
+Nodes (5): Department, Department, departmentController, departmentSchema, mongoose
+
+### Community 63 - "devDependencies"
+Cohesion: 0.33
+Nodes (4): Department, { getHoDAnalytics, getHRAnalytics }, LeaveRequest, User
 
 ### Community 64 - "scripts"
 Cohesion: 0.40
@@ -369,36 +367,53 @@ Cohesion: 0.67
 Nodes (3): Backend, Frontend, Tech Stack
 
 ### Community 73 - "leaveQuotaRoutes.js"
-Cohesion: 0.19
-Nodes (11): getLeaveQuotaSettings(), resetUsedLeaveQuota(), updateLeaveQuotaForAll(), updateUserLeaveQuota(), User, leaveQuotaController, User, authMiddleware (+3 more)
+Cohesion: 0.25
+Nodes (9): getLeaveQuotaSettings(), resetUsedLeaveQuota(), updateLeaveQuotaForAll(), updateUserLeaveQuota(), User, authMiddleware, express, { 
+  getLeaveQuotaSettings, 
+  updateLeaveQuotaForAll,
+  updateUserLeaveQuota,
+  resetUsedLeaveQuota
+} (+1 more)
 
 ### Community 74 - "cloudinary"
-Cohesion: 0.47
-Nodes (3): goTo(), setupHoDSession(), setupHRSession()
-
-### Community 89 - "Architecture Overview"
 Cohesion: 0.67
-Nodes (3): Architecture Overview, Backend Modules, High-Level Flow
+Nodes (3): Client (`client/.env`), Environment Variables, Server (`server/.env`)
+
+### Community 75 - "cors"
+Cohesion: 0.40
+Nodes (3): Department, departments, mongoose
+
+### Community 80 - "User.js"
+Cohesion: 0.29
+Nodes (5): leaveQuotaController, User, leaveQuotaSchema, mongoose, userSchema
+
+### Community 84 - "LeaveRequest.js"
+Cohesion: 0.25
+Nodes (6): bcrypt, LeaveRequest, User, userController, leaveRequestSchema, mongoose
+
+### Community 87 - "hrDashboardController.test.js"
+Cohesion: 0.40
+Nodes (4): Department, hrDashboardController, LeaveRequest, User
 
 ## Knowledge Gaps
-- **463 isolated node(s):** `name`, `private`, `version`, `type`, `dev` (+458 more)
+- **447 isolated node(s):** `name`, `private`, `version`, `type`, `dev` (+442 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **20 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `jspdf` connect `dependencies` to `LeaveAnalytics.jsx`?**
-  _High betweenness centrality (0.024) - this node is a cross-community bridge._
 - **Why does `exportSectionToPDF()` connect `LeaveAnalytics.jsx` to `dependencies`?**
-  _High betweenness centrality (0.024) - this node is a cross-community bridge._
+  _High betweenness centrality (0.025) - this node is a cross-community bridge._
+- **Why does `jspdf` connect `dependencies` to `LeaveAnalytics.jsx`?**
+  _High betweenness centrality (0.025) - this node is a cross-community bridge._
 - **What connects `name`, `private`, `version` to the rest of the system?**
-  _463 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _447 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `App.jsx` be split into smaller, more focused modules?**
+  _Cohesion score 0.05605124685426676 - nodes in this community are weakly interconnected._
 - **Should `leaveController.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.0960591133004926 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.125 - nodes in this community are weakly interconnected._
 - **Should `devDependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.04878048780487805 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05714285714285714 - nodes in this community are weakly interconnected._
 - **Should `vacationRoutes.js` be split into smaller, more focused modules?**
   _Cohesion score 0.05878084179970972 - nodes in this community are weakly interconnected._
-- **Should `dependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.058823529411764705 - nodes in this community are weakly interconnected._

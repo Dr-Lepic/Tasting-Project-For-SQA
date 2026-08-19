@@ -208,6 +208,36 @@ The project follows a **Behavior-Driven Development (BDD)** and **Test-Driven De
 | TC-188 | (NEW) E2E: Review Applications page displays pending global requests | E2E HR | Selenium script | Success | TBD | Pass |
 | TC-189 | (NEW) E2E: All Employees page displays organization-wide directory | E2E HR | Selenium script | Success | TBD | Pass |
 | TC-190 | (NEW) E2E: HR Analytics page loads correctly | E2E HR | Selenium script | Success | TBD | Pass |
+| TC-191 | Leave Application form renders all mandatory input controls | Logged in as Employee | Navigate to `/leave-application` | Form renders type selector, start/end dates, reason, submit button | Form renders mandatory controls | Pass |
+| TC-192 | Selecting Annual leave type dynamically reveals purpose checkboxes | Logged in as Employee | Select 'Annual' leave type in `/leave-application` | Checkboxes for Medical, Conference, Personal are revealed | Checkboxes revealed | Pass |
+| TC-193 | Date pickers calculate and display total weekdays | Logged in as Employee | Fill start and end dates in `/leave-application` | Number of weekdays input auto-populates | Total weekdays displayed | Pass |
+| TC-194 | Selecting Medical purpose displays document attachment area | Logged in as Employee | Select Annual leave and check Medical purpose | Document upload section is displayed | Document section rendered | Pass |
+| TC-195 | Clear button resets all leave form inputs | Logged in as Employee | Enter reason and click 'Clear' button | Form fields are cleared and reset | Form fields reset | Pass |
+| TC-196 | Reject leave application when end date is earlier than start date (Bug SQA-3) | Logged in as Employee | Enter end date before start date in form | Client-side validation prevents submission | Form submits without client error | Fail |
+| TC-197 | Leave history page displays summary stats cards | Logged in as Employee | Navigate to `/leave-history` | Stats for Total, Approved, Declined, Days Taken render | Stats cards render | Pass |
+| TC-198 | Leave history renders status filter dropdown | Logged in as Employee | Inspect filters on `/leave-history` | Status filter has All, Approved, Declined options | Status filter options present | Pass |
+| TC-199 | Leave history renders leave type filter dropdown | Logged in as Employee | Inspect filters on `/leave-history` | Type filter has All, Annual, Casual options | Type filter options present | Pass |
+| TC-200 | Leave history renders history records container | Logged in as Employee | Inspect history list on `/leave-history` | History list/table displays application records | History container rendered | Pass |
+| TC-201 | Expandable detail view opens on history card click | Logged in as Employee | Click history card header on `/leave-history` | Expanded leave application details form appears | Form section expands | Pass |
+| TC-202 | Empty state message rendered when filter has no matches | Logged in as Employee | Filter leave history with no matching records | Friendly empty state message is shown | Empty state displayed | Pass |
+| TC-203 | Application status page renders pending applications container | Logged in as Employee | Navigate to `/application-status` | Page container and pending applications list render | Status page rendered | Pass |
+| TC-204 | Application status cards render multi-stage workflow status badges | Logged in as Employee | Inspect status cards on `/application-status` | Status indicators (Waiting for Alternate, HoD, HR) are shown | Status badges displayed | Pass |
+| TC-205 | Application status page displays descriptive subtitle header | Logged in as Employee | Inspect page header on `/application-status` | Page header contains status tracking title | Header rendered | Pass |
+| TC-206 | Alternate requests page renders delegate requests container | Logged in as Employee | Navigate to `/alternate-requests` | Alternate requests page container renders | Requests container rendered | Pass |
+| TC-207 | Alternate requests view displays header and instructions | Logged in as Employee | Inspect header on `/alternate-requests` | Header with Alternate requests title is present | Header rendered | Pass |
+| TC-208 | Alternate requests item renders action buttons or empty queue | Logged in as Employee | Inspect requests list on `/alternate-requests` | Actionable response buttons or empty state shown | Buttons/empty state rendered | Pass |
+| TC-209 | Profile page displays user personal information | Logged in as Employee | Navigate to `/profile` | User name, email, department, designation displayed | Personal info rendered | Pass |
+| TC-210 | Profile page displays annual and casual leave balance cards | Logged in as Employee | Inspect leave quota section on `/profile` | Annual and Casual balance cards rendered | Balance cards rendered | Pass |
+| TC-211 | Edit Profile allows updating name and designation with Save/Cancel | Logged in as Employee | Click "Edit Profile" on `/profile` | Inline inputs with Save and Cancel buttons appear | Edit controls rendered | Pass |
+| TC-212 | Change Password button opens password modal | Logged in as Employee | Click "Change Password" on `/profile` | Change Password modal dialog opens | Modal dialog opens | Pass |
+| TC-213 | Change Password modal contains current, new, and confirm password fields | Logged in as Employee | Open Change Password modal | Modal renders Current, New, Confirm password inputs | All three fields rendered | Pass |
+| TC-214 | Change Password modal enforces password policy (<6 chars) | Logged in as Employee | Submit password with 3 characters in modal | Error message for password length is displayed | Validation error displayed | Pass |
+| TC-215 | HoD Pending Requests page renders department queue | Logged in as HoD | Navigate to `/hod/pending-requests` | Pending requests queue and department header render | Pending queue rendered | Pass |
+| TC-216 | HoD pending request list displays review action controls or empty state | Logged in as HoD | Inspect pending requests on `/hod/pending-requests` | Actionable approval controls or empty queue shown | Controls/empty queue rendered | Pass |
+| TC-217 | HoD Analytics page renders timeline period filter | Logged in as HoD | Navigate to `/hod/analytics` | Period filter (Monthly / Yearly) is available | Filter controls rendered | Pass |
+| TC-218 | HR System Settings page renders management navigation cards | Logged in as HR | Navigate to `/hr/system-settings` | Leave Quota, HoD Assignment, Public Holidays cards render | Navigation tiles rendered | Pass |
+| TC-219 | HR Leave Quota section renders quota inputs and update button | Logged in as HR | Open Leave Quota section in `/hr/system-settings` | Annual/Casual quota inputs and Update button render | Form controls rendered | Pass |
+| TC-220 | HR Public Holidays section renders holiday list and management controls | Logged in as HR | Open Public Holidays in `/hr/system-settings` | Holiday table, Add Holiday and Upload PDF buttons render | Holiday controls rendered | Pass |
 
 ## 6. Current State of Test Coverage
 Based on the latest automated test runs, here is the current snapshot of our test coverage metrics. 
@@ -223,17 +253,16 @@ Based on the latest automated test runs, here is the current snapshot of our tes
 | `routes` | 100 | 100 | 100 | 100 |
 | `utils` | 71.98 | 55.63 | 67.85 | 71.95 |
 
-*Note: Added 67 new unit/integration test cases (TC-94 to TC-160) covering under-tested modules (`leaveController`, `userController`, `leaveQuotaController`, `departmentController`, `cloudinaryUpload`, `emailService`, `vacationController`, `hodDashboardController`, `hrDashboardController`, `holidayUploadController`, `holidayExtractor`, and `authorize` middleware). Backend statement coverage increased from 40.85% to 64.08% (line coverage 64.71%).*
+*Note: Added 67 backend unit/integration test cases (TC-94 to TC-160) covering under-tested modules (`leaveController`, `userController`, `leaveQuotaController`, `departmentController`, `cloudinaryUpload`, `emailService`, `vacationController`, `hodDashboardController`, `hrDashboardController`, `holidayUploadController`, `holidayExtractor`, and `authorize` middleware). Backend statement coverage is 64.08% (line coverage 64.71%).*
 
-### Frontend Coverage Report
-| Module | % Stmts | % Branch | % Funcs | % Lines |
-|---|---|---|---|---|
-| **Overall** | **1.77** | **1.45** | **0.93** | **1.82** |
-| `components/ProtectedRoute` | 100 | 100 | 100 | 100 |
-| `components/RoleBasedRoute` | 100 | 100 | 100 | 100 |
-| `pages/Login` | 100 | 100 | 100 | 100 |
+### Frontend & E2E Coverage Report
+| Suite | Files | Test Count | Focus Areas |
+|---|---|---|---|
+| **Mocha Selenium Suite** | `tests/mocha/*.test.js` (9 files) | **59 Tests** (TC-N-01 to TC-N-59 / TC-191 to TC-220) | Full UI & E2E flows (Auth, Leave Application, Leave History, Application Status, Alternate Requests, Profile & Password Modal, HoD Queue & Analytics, HR System Settings & Holiday Management) |
+| **Jest E2E Suite** | `tests/e2e/*.test.js` (4 files) | **30 Tests** (TC-161 to TC-190) | High-level role-based E2E journeys (Auth, Employee, HoD, HR) |
+| **Jest Component Suite** | `src/**/__tests__/*.jsx` (4 files) | **26 Tests** | Route protection boundaries (`RoleBasedRoute`, `ProtectedRoute`), `Login.jsx` form and error states |
 
-*Note: The frontend tests currently cover only the critical routing boundaries (`RoleBasedRoute`, `ProtectedRoute`) and the `Login` page. Extensive UI component testing (e.g., `LeaveApplication.jsx`) is the next priority to achieve the 70% target.*
+*Note: 30 new Mocha/Selenium test cases (TC-191 to TC-220) were added covering previously untested employee application/history/status views, profile management, and HoD/HR administrative settings.*
 
 ## 7. Defect Tracking
 Defects found during testing are logged in the **Jira Bug Tracker**. For a complete list of open issues, refer to the `./jira_bug_tracker.md` file.

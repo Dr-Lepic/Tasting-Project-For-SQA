@@ -15,13 +15,13 @@
     "semantic_hash": ""
   },
   "client/jest.config.js": {
-    "mtime": 1787147857.296205,
-    "ast_hash": "b111225bdf70f66dd90dba2389f39f9d",
+    "mtime": 1784953487.023713,
+    "ast_hash": "3d070c628ca7b63e9f31c6eeeb802a24",
     "semantic_hash": ""
   },
   "client/package.json": {
-    "mtime": 1787147058.1071777,
-    "ast_hash": "d601deb512be6f9e52ca577765db6c6d",
+    "mtime": 1784953487.0245101,
+    "ast_hash": "b0db83f4008dd9b298aff40786a2cef1",
     "semantic_hash": ""
   },
   "client/src/App.jsx": {
@@ -645,13 +645,13 @@
     "semantic_hash": ""
   },
   "docs/jira_bug_tracker.md": {
-    "mtime": 1787147960.8817132,
-    "ast_hash": "0350ec68fd97478fb724dd3440cc47fb",
+    "mtime": 1786185557.3375416,
+    "ast_hash": "0b24cb16db6ace93e9fe0ac16ccaa654",
     "semantic_hash": ""
   },
   "docs/test_documentation.md": {
-    "mtime": 1787147953.8210983,
-    "ast_hash": "b51ffa44c9057af3d51ae79ed12a7f13",
+    "mtime": 1786186055.123923,
+    "ast_hash": "1ac77690b0ac71c59b2479281325d89c",
     "semantic_hash": ""
   },
   "docs/walkthrough.md": {
@@ -747,81 +747,6 @@
   "server/utils/__tests__/emailService.test.js": {
     "mtime": 1786185810.1091166,
     "ast_hash": "461d448a292275a3df24d28378792b1c",
-    "semantic_hash": ""
-  },
-  "client/jest.e2e.config.js": {
-    "mtime": 1787147058.10569,
-    "ast_hash": "7851280c71b2fc0b7e350207db743412",
-    "semantic_hash": ""
-  },
-  "client/tests/e2e/auth.test.js": {
-    "mtime": 1787147058.10762,
-    "ast_hash": "4c82985e87a563d2e3533ae9606e7408",
-    "semantic_hash": ""
-  },
-  "client/tests/e2e/employee.test.js": {
-    "mtime": 1787147058.107773,
-    "ast_hash": "f3bf1342b8279489b8a424532001e78b",
-    "semantic_hash": ""
-  },
-  "client/tests/e2e/hod.test.js": {
-    "mtime": 1787147058.1078913,
-    "ast_hash": "e4d7006285fd2dcd65a27608a6d91b6c",
-    "semantic_hash": ""
-  },
-  "client/tests/e2e/hr.test.js": {
-    "mtime": 1787147058.108,
-    "ast_hash": "db13ccdb32e01b2cd0cd7aa595287941",
-    "semantic_hash": ""
-  },
-  "client/tests/mocha/application_tracking.test.js": {
-    "mtime": 1787147914.3180685,
-    "ast_hash": "6786974c8056b7bd8b9c4b8a86a59c50",
-    "semantic_hash": ""
-  },
-  "client/tests/mocha/forgot_password.test.js": {
-    "mtime": 1787147058.108174,
-    "ast_hash": "7787a9c60d82e2167183d83af1c881a0",
-    "semantic_hash": ""
-  },
-  "client/tests/mocha/hod_hr_management.test.js": {
-    "mtime": 1787147928.2335546,
-    "ast_hash": "38035dcce34c8ddf5b26593173851ae4",
-    "semantic_hash": ""
-  },
-  "client/tests/mocha/leave_application.test.js": {
-    "mtime": 1787147899.1454463,
-    "ast_hash": "8df400d893f2db105c59e66ab9ce546b",
-    "semantic_hash": ""
-  },
-  "client/tests/mocha/leave_history.test.js": {
-    "mtime": 1787147907.5041888,
-    "ast_hash": "e512b4218b129c489f17b13fa11e43f9",
-    "semantic_hash": ""
-  },
-  "client/tests/mocha/login.test.js": {
-    "mtime": 1787147058.1082807,
-    "ast_hash": "168712e2a09b8f71af4b15fb1070d681",
-    "semantic_hash": ""
-  },
-  "client/tests/mocha/profile_settings.test.js": {
-    "mtime": 1787147921.403871,
-    "ast_hash": "93092cf7e01aa5c74ee02c373f7a3d5c",
-    "semantic_hash": ""
-  },
-  "client/tests/mocha/register.test.js": {
-    "mtime": 1787147058.1083884,
-    "ast_hash": "2e1792cb76e047d1f8ea3b79f0384dd0",
-    "semantic_hash": ""
-  },
-  "client/tests/mocha/routes.test.js": {
-    "mtime": 1787147058.1085439,
-    "ast_hash": "e4625111f20eab0ac5d37b5df1484e82",
-    "semantic_hash": ""
-  },
-  "client/tests/README.md": {
-    "mtime": 1787147058.1073701,
-    "ast_hash": "0f9ef85c753c5b3e8f8ffd2106c5f364",
     "semantic_hash": ""
   }
 }
