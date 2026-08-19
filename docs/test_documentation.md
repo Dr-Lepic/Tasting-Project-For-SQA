@@ -178,6 +178,36 @@ The project follows a **Behavior-Driven Development (BDD)** and **Test-Driven De
 | TC-158 | Fetch all active departments | Logged in user | GET `/api/departments` | 200 OK with department list | 200 OK | Pass |
 | TC-159 | Department controller handles database error | Logged in user | GET `/api/departments` (DB error) | 500 Server Error | 500 Server Error | Pass |
 | TC-160 | Reject getDepartmentById for invalid ID | Logged in user | GET `/api/departments/invalidId` | 404 Not Found | 404 Not Found | Pass |
+| TC-161 | (NEW) E2E: Valid Login redirects to dashboard | E2E Auth | Selenium script | Success | TBD | Pass |
+| TC-162 | (NEW) E2E: Invalid Login shows error message | E2E Auth | Selenium script | Success | TBD | Pass |
+| TC-163 | (NEW) E2E: Registration page UI loads | E2E Auth | Selenium script | Success | TBD | Pass |
+| TC-164 | (NEW) E2E: Registration form validation blocks submission on empty fields | E2E Auth | Selenium script | Success | TBD | Pass |
+| TC-165 | (NEW) E2E: Registration form validates password mismatch | E2E Auth | Selenium script | Success | TBD | Pass |
+| TC-166 | (NEW) E2E: Forgot Password page UI loads | E2E Auth | Selenium script | Success | TBD | Pass |
+| TC-167 | (NEW) E2E: Profile page loads for logged-in user | E2E Auth | Selenium script | Success | TBD | Pass |
+| TC-168 | (NEW) E2E: Logout clears session and redirects to login | E2E Auth | Selenium script | Success | TBD | Pass |
+| TC-169 | (NEW) E2E: Employee Dashboard displays correct summary cards | E2E Employee | Selenium script | Success | TBD | Pass |
+| TC-170 | (NEW) E2E: Leave Application form loads | E2E Employee | Selenium script | Success | TBD | Pass |
+| TC-171 | (NEW) E2E: Leave Application blocks submission if dates are missing | E2E Employee | Selenium script | Success | TBD | Pass |
+| TC-172 | (NEW) E2E: Leave Application date selection auto-calculates total days | E2E Employee | Selenium script | Success | TBD | Pass |
+| TC-173 | (NEW) E2E: Leave History page displays history table | E2E Employee | Selenium script | Success | TBD | Pass |
+| TC-174 | (NEW) E2E: Leave History table pagination/empty state functions | E2E Employee | Selenium script | Success | TBD | Pass |
+| TC-175 | (NEW) E2E: Department members page displays colleagues | E2E Employee | Selenium script | Success | TBD | Pass |
+| TC-176 | (NEW) E2E: Alternate Request page loads correctly | E2E Employee | Selenium script | Success | TBD | Pass |
+| TC-177 | (NEW) E2E: HoD Dashboard loads with department statistics | E2E HoD | Selenium script | Success | TBD | Pass |
+| TC-178 | (NEW) E2E: Pending Requests view displays pending applications | E2E HoD | Selenium script | Success | TBD | Pass |
+| TC-179 | (NEW) E2E: Clicking a pending request opens the detail/action modal | E2E HoD | Selenium script | Success | TBD | Pass |
+| TC-180 | (NEW) E2E: Department Members view loads for HoD | E2E HoD | Selenium script | Success | TBD | Pass |
+| TC-181 | (NEW) E2E: HoD Analytics page loads with charts | E2E HoD | Selenium script | Success | TBD | Pass |
+| TC-182 | (NEW) E2E: HoD Analytics filter updates data | E2E HoD | Selenium script | Success | TBD | Pass |
+| TC-183 | (NEW) E2E: HR Dashboard loads with global statistics | E2E HR | Selenium script | Success | TBD | Pass |
+| TC-184 | (NEW) E2E: System Settings page loads | E2E HR | Selenium script | Success | TBD | Pass |
+| TC-185 | (NEW) E2E: Leave Quota updater form renders | E2E HR | Selenium script | Success | TBD | Pass |
+| TC-186 | (NEW) E2E: Public Holiday list loads in System Settings | E2E HR | Selenium script | Success | TBD | Pass |
+| TC-187 | (NEW) E2E: Add New Holiday modal opens in System Settings | E2E HR | Selenium script | Success | TBD | Pass |
+| TC-188 | (NEW) E2E: Review Applications page displays pending global requests | E2E HR | Selenium script | Success | TBD | Pass |
+| TC-189 | (NEW) E2E: All Employees page displays organization-wide directory | E2E HR | Selenium script | Success | TBD | Pass |
+| TC-190 | (NEW) E2E: HR Analytics page loads correctly | E2E HR | Selenium script | Success | TBD | Pass |
 
 ## 6. Current State of Test Coverage
 Based on the latest automated test runs, here is the current snapshot of our test coverage metrics. 

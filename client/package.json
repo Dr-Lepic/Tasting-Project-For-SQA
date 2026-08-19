@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "test": "jest --passWithNoTests",
+    "test:e2e": "jest -c jest.e2e.config.js",
+    "test:mocha": "mocha tests/mocha/*.test.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -33,12 +35,15 @@
     "@vitejs/plugin-react": "^5.1.1",
     "babel-jest": "^30.4.1",
     "babel-plugin-react-compiler": "^1.0.0",
+    "chai": "^6.2.2",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
+    "mocha": "^11.8.0",
+    "selenium-webdriver": "^4.47.0",
     "vite": "^7.2.4"
   }
 }
